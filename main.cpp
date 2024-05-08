@@ -23,9 +23,12 @@ void insertEnd(Node**, int);
 void deleteNode(Node**, Node*);
 void displayList(Node*);
 void swapValue(Node*, Node*);
-void selectionSort(Node*);
-void optimizedSelectionSort(Node*);
+void selectionSort(Node**);
+void optimizedSelectionSort(Node**);
 void addRandomElements(Node**, int, int);
+Node* copyList(Node**);
+void bubbleSort(Node**);
+void optimizedBubbleSort(Node**, int);
 
 int main()
 {
@@ -47,7 +50,7 @@ int main()
 
     cout << endl;
     cout << "Lista depois do Selection Sort" << endl;
-    selectionSort(head1);
+    selectionSort(&head1);
     displayList(head1);
 
     cout << "================================================================" << endl;
@@ -68,17 +71,22 @@ int main()
 
     cout << endl;
     cout << "Lista depois do Selection Sort Otimizado" << endl;
-    optimizedSelectionSort(head2);
+    optimizedSelectionSort(&head2);
     displayList(head2);
 
     cout << "================================================================" << endl;
     Node* head3 = nullptr;
-    Node* head4 = nullptr;
+    
     cout << "Teste 3: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
     addRandomElements(&head3, 10000, 100);
+
+    Node* head4 = copyList(&head3);
+    Node* head5 = copyList(&head3);
+    Node* head6 = copyList(&head3);
+
     //displayList(head3); // Não é dado o display pela quantidade de elementos existentes
     auto timeStart = high_resolution_clock::now();
-    selectionSort(head3);
+    selectionSort(&head3);
     auto timeStop = high_resolution_clock::now();
 
     auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
@@ -86,16 +94,38 @@ int main()
 
     cout << "================================================================" << endl;
     cout << "Teste 4: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
-    addRandomElements(&head4, 10000, 100);
+
     //displayList(head4);  // Não é dado o display pela quantidade de elementos existentes
     timeStart = high_resolution_clock::now();
-    optimizedSelectionSort(head4);
+    optimizedSelectionSort(&head4);
     timeStop = high_resolution_clock::now();
 
     timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
     cout << "Tempo de execucao com o Selection Sort otimizado: " << timeDuration.count() << " nanosegundos." << endl;
     cout << "================================================================" << endl;
 
+    cout << "================================================================" << endl;
+
+    cout << "Teste 5: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
+    //displayList(head3); // Não é dado o display pela quantidade de elementos existentes
+    timeStart = high_resolution_clock::now();
+    bubbleSort(&head5);
+    timeStop = high_resolution_clock::now();
+
+    timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+    cout << "Tempo de execucao com o Bubble Sort: " << timeDuration.count() << " nanosegundos." << endl;
+
+    cout << "================================================================" << endl;
+    cout << "Teste 6: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
+
+    //displayList(head4);  // Não é dado o display pela quantidade de elementos existentes
+    timeStart = high_resolution_clock::now();
+    optimizedBubbleSort(&head6, 10000);
+    timeStop = high_resolution_clock::now();
+
+    timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+    cout << "Tempo de execucao com o Bubble Sort otimizado: " << timeDuration.count() << " nanosegundos." << endl;
+    cout << "================================================================" << endl;
 
     return 0;
 }
@@ -108,11 +138,11 @@ Node* createNode(int iPayload)
     Node* temp = (Node*) malloc(sizeof(Node));
     
     // Carga do nó
-    temp -> iPayload = iPayload;
+    temp->iPayload = iPayload;
     
     // Inicializando nó apontando para nulo (Sem nós na frente e na traseira)
-    temp -> ptrNext = nullptr;
-    temp -> ptrPrev = nullptr;
+    temp->ptrNext = nullptr;
+    temp->ptrPrev = nullptr;
     
     return temp;
 }
@@ -129,7 +159,7 @@ void displayList(Node* node)
     }
     
     // Caso o nó passado estiver no meio o no final da lista
-    if  (node -> ptrPrev != nullptr)
+    if  (node->ptrPrev != nullptr)
     {
         cout << "Meio ou Fim da Lista: Não é possível realizar displayList" << endl;
         return;
@@ -143,8 +173,8 @@ void displayList(Node* node)
     // Print de todos os elementos da lista
     while(temp != nullptr)
     {
-        cout << temp -> iPayload<< " ";
-        temp = temp -> ptrNext;
+        cout << temp->iPayload<< " ";
+        temp = temp->ptrNext;
     }
     
     cout << endl;
@@ -239,79 +269,78 @@ void swapValue(Node* node1, Node* node2)
     node2->iPayload = iTemp;
 }
 
-void selectionSort(Node* head)
+void selectionSort(Node** head)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Selection Sort*/
 
     // Inicializando nós para percorrerem a lista
-    Node* OuterNode = head;
-    Node* InnerNode = head;
+    Node* ptrOuterNode = *head;
+    Node* ptrInnerNode = *head;
 
     // Realizando verificação para todos os nós
-    while(OuterNode != nullptr)
+    while(ptrOuterNode != nullptr)
     {
         // O nó de troca recebe o nó posterior ao de fora
-        InnerNode = OuterNode->ptrNext;
+        ptrInnerNode = ptrOuterNode->ptrNext;
 
         // O nó de dentro percorre até o último elemento da lista
-        while (InnerNode != nullptr)
+        while (ptrInnerNode != nullptr)
         {
             // Condição de Troca
-            if (OuterNode->iPayload > InnerNode->iPayload)
+            if (ptrOuterNode->iPayload > ptrInnerNode->iPayload)
             {
-                swapValue(OuterNode, InnerNode);
+                swapValue(ptrOuterNode, ptrInnerNode);
             }
 
-            InnerNode = InnerNode->ptrNext;
+            ptrInnerNode = ptrInnerNode->ptrNext;
         }
 
-        OuterNode = OuterNode->ptrNext;
+        ptrOuterNode = ptrOuterNode->ptrNext;
     }
 }
 
-
-void optimizedSelectionSort(Node* head)
+void optimizedSelectionSort(Node** head)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Selection Sort de maneira otimizada.*/
 
-    int minValue = 0;
+    int iMinValue = 0;
 
     // Inicializando nós para percorrerem a lista
-    Node* OuterNode = head;
-    Node* InnerNode = head;
-    Node* SwapNode = head;
+    Node* ptrOuterNode = *head;
+    Node* ptrInnerNode = *head;
+    Node* ptrSwapNode = *head;
 
     // Realizando verificação para todos os nós
-    while(OuterNode != nullptr)
+    while(ptrOuterNode != nullptr)
     {
         // O nó de dentro recebe o nó posterior ao de fora
-        InnerNode = OuterNode->ptrNext;
+        ptrInnerNode = ptrOuterNode->ptrNext;
 
         // O nó de troca recebe o nó de fora
-        SwapNode = OuterNode;
+        ptrSwapNode = ptrOuterNode;
 
         // O valor mínimo é inicialiazado com valor do nó de fora
-        minValue = OuterNode->iPayload;
+        iMinValue = ptrOuterNode->iPayload;
 
         // Verificação para todos nós posteriores ao de fora
-        while (InnerNode != nullptr)
+        while (ptrInnerNode != nullptr)
         {
             // Condição de Troca
-            if (minValue > InnerNode->iPayload)
+            if (iMinValue > ptrInnerNode->iPayload)
             {
-                minValue = InnerNode->iPayload;
-                SwapNode = InnerNode;
+                iMinValue = ptrInnerNode->iPayload;
+                ptrSwapNode = ptrInnerNode;
             }
 
-            InnerNode = InnerNode->ptrNext;
+            ptrInnerNode = ptrInnerNode->ptrNext;
         }
 
         // Troca de valores entre os nós
-        swapValue(OuterNode, SwapNode); 
+        swapValue(ptrOuterNode, ptrSwapNode); 
 
-        OuterNode = OuterNode->ptrNext;
+        ptrOuterNode = ptrOuterNode->ptrNext;
     }
 }
 
@@ -322,4 +351,75 @@ void addRandomElements(Node** head, int iQuantElements, int iMaxValue)
 
     for (int i=0; i < iQuantElements; i++)
         insertEnd(head, (rand() % iMaxValue) + 1);
+}
+
+Node* copyList(Node** head)
+{
+    // Essa função copia uma lista duplamente encadeada
+
+    Node* ptrCurrent = *head;
+    Node* newHead = createNode(ptrCurrent->iPayload);
+
+    while (ptrCurrent != nullptr)
+    {
+        insertEnd(&newHead, ptrCurrent->iPayload);
+        ptrCurrent = ptrCurrent->ptrNext;
+    }
+    
+    return newHead;
+}
+
+void bubbleSort(Node** head)
+{
+    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
+    por meio do método Bubble Sort*/
+
+    Node* ptrOuterNode = *head;
+    Node* ptrInnerNode = *head;
+
+    if (ptrOuterNode == nullptr || ptrOuterNode->ptrNext == nullptr) return;
+    
+    while (ptrOuterNode != nullptr)
+    {
+        ptrInnerNode = *head;
+
+        while (ptrInnerNode->ptrNext != nullptr)
+        {
+            if (ptrInnerNode->iPayload > ptrInnerNode->ptrNext->iPayload)
+                swapValue(ptrInnerNode, ptrInnerNode->ptrNext);
+
+            ptrInnerNode = ptrInnerNode->ptrNext;
+        }
+        ptrOuterNode = ptrOuterNode->ptrNext;
+    }
+}
+
+void optimizedBubbleSort(Node** head, int iLength)
+{
+    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
+    por meio do método Selection Sort de maneira otimizada.*/
+
+    Node* ptrCurrent = *head;
+
+    if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
+    
+    bool bUnordered = false;
+    int i = 0;
+    for (int iOuterLoop = 0; iOuterLoop < iLength - 1; iOuterLoop++)
+    {
+        bUnordered = false;
+
+        for (int iInnerLoop = 0; iInnerLoop < (iLength - 1) - iOuterLoop; iInnerLoop++)
+        {
+            if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
+            {
+                swapValue(ptrCurrent, ptrCurrent->ptrNext);
+                bUnordered = true;
+            }
+            ptrCurrent = ptrCurrent->ptrNext;
+        }
+
+        ptrCurrent = *head;
+        if (bUnordered == false) break;    
+    }
 }
