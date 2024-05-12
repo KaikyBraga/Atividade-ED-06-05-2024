@@ -27,9 +27,20 @@ void deleteNode(Node**, Node*);
 void displayList(Node*);
 void addRandomElements(Node**, int, int);
 void insertSort(Node**);
+void clearList(Node**);
 
 int main() {
     int iNumLinhas = 100;
+
+    Node* testHead = nullptr;
+
+    addRandomElements(&testHead, 1, 100);  
+
+    // displayList(testHead); 
+
+    clearList(&testHead);
+
+    displayList(testHead);
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
@@ -242,4 +253,27 @@ void insertSort(Node** head)
         // Preparando o Loop Externo para a próxima iteração
         ptrOuterNode = ptrOuterNode->ptrNext;
     }
+}
+
+void clearList(Node** head)
+{
+    // Essa função esvazia uma lista duplamente encadeada
+
+    Node* ptrCurrent = *head;
+
+    // Confere se já está vazia
+    if (ptrCurrent == nullptr) return;
+
+    // Percorre a lista até o último elemento
+    while (ptrCurrent->ptrNext != nullptr) ptrCurrent = ptrCurrent->ptrNext;
+    
+    // Faz o caminho contrário e deleta o último nó a cada iteração
+    while (ptrCurrent != *head)
+    {
+        ptrCurrent = ptrCurrent->ptrPrev;
+
+        deleteNode(head, ptrCurrent->ptrNext);
+    }
+    // Por fim, deleta o primeiro nó
+    deleteNode(head, ptrCurrent);
 }
