@@ -12,6 +12,7 @@ using std::chrono::duration_cast;
 using std::chrono::nanoseconds;
 using std::ios;
 using std::ofstream;
+
 typedef struct Node
 {
     int iPayload;
@@ -24,8 +25,11 @@ void insertFront(Node**, int);
 void insertEnd(Node**, int);
 void deleteNode(Node**, Node*);
 void displayList(Node*);
+void swapValue(Node*, Node*);
 void addRandomElements(Node**, int, int);
-void insertSort(Node**);
+Node* copyList(Node**);
+void bubbleSort(Node**);
+void optimizedBubbleSort(Node**, int);
 void clearList(Node**);
 
 int main() 
@@ -34,28 +38,36 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile("insertSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile("bubbleSort_time.csv", ios::out | ios::trunc);
     
-    outputFile << "Quantidade de Elementos,Tempo (nanossegundos)" << endl;
+    outputFile << "Quantidade de Elementos,Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
 
-    Node* head = nullptr;
+    Node* head1 = nullptr;
+    Node* head2 = nullptr;
 
     for (int i = 1; i <= iNumLinhas ; i ++) 
     {
-        addRandomElements(&head, 10000, i);
+        addRandomElements(&head1, 10000, i);
+        head2 = copyList(&head1);
 
-        auto timeStart = high_resolution_clock::now();
-        insertSort(&head);
-        auto timeStop = high_resolution_clock::now();
+        auto timeStart1 = high_resolution_clock::now();
+        bubbleSort(&head1);
+        auto timeStop1 = high_resolution_clock::now();
 
-        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+        auto timeStart2 = high_resolution_clock::now();
+        optimizedBubbleSort(&head2,10000);
+        auto timeStop2 = high_resolution_clock::now();
 
-        outputFile << 10000 << "," << timeDuration.count() << endl;
-        clearList(&head);
+        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
+        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
+
+        outputFile << 10000 << "," << timeDuration1.count() << "," << timeDuration2.count() << endl;
+        clearList(&head1);
+        clearList(&head2);
     }
 
     outputFile.close();
-
+    
     return 0;
 }
 
@@ -189,6 +201,15 @@ void deleteNode(Node** head, Node* ptrDelete)
     free(ptrDelete);
 }
 
+void swapValue(Node* node1, Node* node2)
+{
+    // Essa função troca os valores dos nós passados.
+
+    int iTemp = node1->iPayload;
+    node1->iPayload = node2->iPayload;
+    node2->iPayload = iTemp;
+}
+
 void addRandomElements(Node** head, int iQuantElements, int iMaxValue)
 {
     // Essa função adiciona elementos aleatórios em uma Lista duplamente encadeada.
@@ -198,52 +219,74 @@ void addRandomElements(Node** head, int iQuantElements, int iMaxValue)
         insertEnd(head, (rand() % iMaxValue) + 1);
 }
 
-void insertSort(Node** head)
+Node* copyList(Node** head)
 {
-    /*
-    Esta função implementa o método de ordenação de uma lista duplamente encadeada
-    por meio do método de Insertion Sort.
-    */
+    // Essa função copia uma lista duplamente encadeada
 
-    // Caso a lista não tenha elementos ou tiver apenas um nó
-    if (head == nullptr || (*head)->ptrNext == nullptr)
-        return; 
+    Node* ptrCurrent = *head;
+    Node* newHead = createNode(ptrCurrent->iPayload);
 
-    Node* ptrOuterNode = (*head)->ptrNext; 
-    Node* ptrInnerNode = nullptr;
-    int iInsertValue = 0;
+    while (ptrCurrent != nullptr)
+    {
+        insertEnd(&newHead, ptrCurrent->iPayload);
+        ptrCurrent = ptrCurrent->ptrNext;
+    }
+    
+    return newHead;
+}
 
-    // Loop Externo (Começa sempre no segundo nó)
+void bubbleSort(Node** head)
+{
+    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
+    por meio do método Bubble Sort*/
+
+    Node* ptrOuterNode = *head;
+    Node* ptrInnerNode = *head;
+
+    if (ptrOuterNode == nullptr || ptrOuterNode->ptrNext == nullptr) return;
+    
     while (ptrOuterNode != nullptr)
     {
-        // Valor de troca
-        iInsertValue = ptrOuterNode->iPayload;
+        ptrInnerNode = *head;
 
-        // Loop Interno (Começa sempre do nó anterior do Loop Externo)
-        ptrInnerNode = ptrOuterNode->ptrPrev;
-        while (ptrInnerNode != nullptr && iInsertValue < ptrInnerNode->iPayload)
+        while (ptrInnerNode->ptrNext != nullptr)
         {
-            // Caso o valor do nó seja maior que o do valor de troca,
-            // então o valor do sucessor desse nó é alterado para o valor desse nó
-            ptrInnerNode->ptrNext->iPayload = ptrInnerNode->iPayload;
+            if (ptrInnerNode->iPayload > ptrInnerNode->ptrNext->iPayload)
+                swapValue(ptrInnerNode, ptrInnerNode->ptrNext);
 
-            // Pegando o nó anterior no Loop Interno
-            ptrInnerNode = ptrInnerNode->ptrPrev;
+            ptrInnerNode = ptrInnerNode->ptrNext;
         }
-
-        // Caso o Loop Interno percorra todos os nós anteriores ao Loop Externo
-        if (ptrInnerNode == nullptr) 
-        {
-            (*head)->iPayload = iInsertValue;
-        } 
-
-        else 
-        {
-            ptrInnerNode->ptrNext->iPayload = iInsertValue;
-        }
-
-        // Preparando o Loop Externo para a próxima iteração
         ptrOuterNode = ptrOuterNode->ptrNext;
+    }
+}
+
+void optimizedBubbleSort(Node** head, int iLength)
+{
+    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
+    por meio do método Selection Sort de maneira otimizada.*/
+
+    Node* ptrCurrent = *head;
+
+    if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
+    
+    bool bUnordered = false;
+    int i = 0;
+    for (int iOuterLoop = 0; iOuterLoop < iLength - 1; iOuterLoop++)
+    {
+        bUnordered = false;
+
+        for (int iInnerLoop = 0; iInnerLoop < (iLength - 1) - iOuterLoop; iInnerLoop++)
+        {
+            if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
+            {
+                swapValue(ptrCurrent, ptrCurrent->ptrNext);
+                bUnordered = true;
+            }
+            ptrCurrent = ptrCurrent->ptrNext;
+        }
+
+        ptrCurrent = *head;
+        if (bUnordered == false) break;    
     }
 }
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <chrono>
+#include <fstream>
 
 using std::cin;
 using std::cout;
@@ -9,6 +10,8 @@ using std::rand;
 using std::chrono::high_resolution_clock;
 using std::chrono::duration_cast;
 using std::chrono::nanoseconds;
+using std::ios;
+using std::ofstream;
 
 typedef struct Node
 {
@@ -27,106 +30,44 @@ void selectionSort(Node**);
 void optimizedSelectionSort(Node**);
 void addRandomElements(Node**, int, int);
 Node* copyList(Node**);
-void bubbleSort(Node**);
-void optimizedBubbleSort(Node**, int);
+void clearList(Node**);
 
-int main()
+int main() 
 {
-    cout << "================================================================" << endl;
-    Node* head1 = nullptr;
-    cout << "Teste 1: Lista com 10 elementos:" << "\n" << endl;
-    cout << "Lista antes do Selection Sort" << endl;
-    insertFront(&head1, 10);
-    insertFront(&head1, 2);
-    insertFront(&head1, 5);
-    insertFront(&head1, 6);
-    insertFront(&head1, 9);
-    insertFront(&head1, 1);
-    insertFront(&head1, 53);
-    insertFront(&head1, 2);
-    insertFront(&head1, 13);
-    insertFront(&head1, 24);
-    displayList(head1);
+    int iNumLinhas = 100;
 
-    cout << endl;
-    cout << "Lista depois do Selection Sort" << endl;
-    selectionSort(&head1);
-    displayList(head1);
-
-    cout << "================================================================" << endl;
-    Node* head2 = nullptr;
-    cout << "Teste 2: Lista com 10 elementos:" << "\n" << endl;
-    cout << "Lista antes do Selection Sort Otimizado" << endl;
-    insertFront(&head2, 10);
-    insertFront(&head2, 2);
-    insertFront(&head2, 5);
-    insertFront(&head2, 6);
-    insertFront(&head2, 9);
-    insertFront(&head2, 1);
-    insertFront(&head2, 53);
-    insertFront(&head2, 2);
-    insertFront(&head2, 13);
-    insertFront(&head2, 24);
-    displayList(head2);
-
-    cout << endl;
-    cout << "Lista depois do Selection Sort Otimizado" << endl;
-    optimizedSelectionSort(&head2);
-    displayList(head2);
-
-    cout << "================================================================" << endl;
-    Node* head3 = nullptr;
+    // Inicialização da semente do gerador de números aleatórios com o tempo atual
+    srand(time(nullptr)); 
+    ofstream outputFile("selectionSort_time.csv", ios::out | ios::trunc);
     
-    cout << "Teste 3: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
-    addRandomElements(&head3, 10000, 100);
+    outputFile << "Quantidade de Elementos,Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
 
-    Node* head4 = copyList(&head3);
-    Node* head5 = copyList(&head3);
-    Node* head6 = copyList(&head3);
+    Node* head1 = nullptr;
+    Node* head2 = nullptr;
 
-    //displayList(head3); // Não é dado o display pela quantidade de elementos existentes
-    auto timeStart = high_resolution_clock::now();
-    selectionSort(&head3);
-    auto timeStop = high_resolution_clock::now();
+    for (int i = 1; i <= iNumLinhas ; i ++) 
+    {
+        addRandomElements(&head1, 10000, i);
+        head2 = copyList(&head1);
 
-    auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
-    cout << "Tempo de execucao com o Selection Sort: " << timeDuration.count() << " nanosegundos." << endl;
+        auto timeStart1 = high_resolution_clock::now();
+        selectionSort(&head1);
+        auto timeStop1 = high_resolution_clock::now();
 
-    cout << "================================================================" << endl;
-    cout << "Teste 4: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
+        auto timeStart2 = high_resolution_clock::now();
+        optimizedSelectionSort(&head2);
+        auto timeStop2 = high_resolution_clock::now();
 
-    //displayList(head4);  // Não é dado o display pela quantidade de elementos existentes
-    timeStart = high_resolution_clock::now();
-    optimizedSelectionSort(&head4);
-    timeStop = high_resolution_clock::now();
+        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
+        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
-    timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
-    cout << "Tempo de execucao com o Selection Sort otimizado: " << timeDuration.count() << " nanosegundos." << endl;
-    cout << "================================================================" << endl;
+        outputFile << 10000 << "," << timeDuration1.count() << "," << timeDuration2.count() << endl;
+        clearList(&head1);
+        clearList(&head2);
+    }
 
-    cout << "================================================================" << endl;
-
-    cout << "Teste 5: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
-    //displayList(head3); // Não é dado o display pela quantidade de elementos existentes
-    timeStart = high_resolution_clock::now();
-    bubbleSort(&head5);
-    timeStop = high_resolution_clock::now();
-
-    timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
-    cout << "Tempo de execucao com o Bubble Sort: " << timeDuration.count() << " nanosegundos." << endl;
-
-    cout << "================================================================" << endl;
-    cout << "Teste 6: Lista com 10000 elementos com carga Payload de 0 ate 100:" << "\n" << endl;
-
-    //displayList(head4);  // Não é dado o display pela quantidade de elementos existentes
-    timeStart = high_resolution_clock::now();
-    optimizedBubbleSort(&head6, 10000);
-    timeStop = high_resolution_clock::now();
-
-    timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
-    cout << "Tempo de execucao com o Bubble Sort otimizado: " << timeDuration.count() << " nanosegundos." << endl;
-    cout << "================================================================" << endl;
-
+    outputFile.close();
+    
     return 0;
 }
 
@@ -369,57 +310,25 @@ Node* copyList(Node** head)
     return newHead;
 }
 
-void bubbleSort(Node** head)
+void clearList(Node** head)
 {
-    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
-    por meio do método Bubble Sort*/
-
-    Node* ptrOuterNode = *head;
-    Node* ptrInnerNode = *head;
-
-    if (ptrOuterNode == nullptr || ptrOuterNode->ptrNext == nullptr) return;
-    
-    while (ptrOuterNode != nullptr)
-    {
-        ptrInnerNode = *head;
-
-        while (ptrInnerNode->ptrNext != nullptr)
-        {
-            if (ptrInnerNode->iPayload > ptrInnerNode->ptrNext->iPayload)
-                swapValue(ptrInnerNode, ptrInnerNode->ptrNext);
-
-            ptrInnerNode = ptrInnerNode->ptrNext;
-        }
-        ptrOuterNode = ptrOuterNode->ptrNext;
-    }
-}
-
-void optimizedBubbleSort(Node** head, int iLength)
-{
-    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
-    por meio do método Selection Sort de maneira otimizada.*/
+    // Essa função esvazia uma lista duplamente encadeada
 
     Node* ptrCurrent = *head;
 
-    if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
+    // Confere se já está vazia
+    if (ptrCurrent == nullptr) return;
+
+    // Percorre a lista até o último elemento
+    while (ptrCurrent->ptrNext != nullptr) ptrCurrent = ptrCurrent->ptrNext;
     
-    bool bUnordered = false;
-    int i = 0;
-    for (int iOuterLoop = 0; iOuterLoop < iLength - 1; iOuterLoop++)
+    // Faz o caminho contrário e deleta o último nó a cada iteração
+    while (ptrCurrent != *head)
     {
-        bUnordered = false;
+        ptrCurrent = ptrCurrent->ptrPrev;
 
-        for (int iInnerLoop = 0; iInnerLoop < (iLength - 1) - iOuterLoop; iInnerLoop++)
-        {
-            if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
-            {
-                swapValue(ptrCurrent, ptrCurrent->ptrNext);
-                bUnordered = true;
-            }
-            ptrCurrent = ptrCurrent->ptrNext;
-        }
-
-        ptrCurrent = *head;
-        if (bUnordered == false) break;    
+        deleteNode(head, ptrCurrent->ptrNext);
     }
+    // Por fim, deleta o primeiro nó
+    deleteNode(head, ptrCurrent);
 }
