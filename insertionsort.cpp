@@ -3,16 +3,11 @@
 #include <fstream>
 #include "insertionsortUtils.h"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::string;
-using std::rand;
-using std::chrono::high_resolution_clock;
-using std::chrono::duration_cast;
-using std::chrono::nanoseconds;
-using std::ios;
-using std::ofstream;
+using namespace std;
+using chrono::high_resolution_clock;
+using chrono::duration_cast;
+using chrono::nanoseconds;
+
 
 int main() 
 {

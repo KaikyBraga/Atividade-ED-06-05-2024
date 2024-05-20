@@ -1,10 +1,7 @@
 #include <iostream>
 #include "bubbleSortUtils.h"
 
-using std::cin;
-using std::cout;
-using std::endl;
-using std::string;
+using namespace std;
 
 Node* createNode(int iPayload)
 {
