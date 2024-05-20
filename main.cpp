@@ -19,7 +19,7 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile1("bubbleSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile1("output\bubbleSort_time.csv", ios::out | ios::trunc);
     
     outputFile1 << "Quantidade de Elementos,Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
 
@@ -53,7 +53,7 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile2("selectionSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile2("output\selectionSort_time.csv", ios::out | ios::trunc);
     
     outputFile2 << "Quantidade de Elementos,Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
 
@@ -87,7 +87,7 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile3("insertSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile3("output\insertSort_time.csv", ios::out | ios::trunc);
     
     outputFile3 << "Quantidade de Elementos,Tempo (nanossegundos)" << endl;
 
