@@ -9,4 +9,6 @@ void optimizedSelectionSort(Node**);
 
 void insertSort(Node**);
 
+void radixSort(Node**, int);
+
 #endif

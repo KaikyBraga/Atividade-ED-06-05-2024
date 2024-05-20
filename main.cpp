@@ -19,9 +19,9 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile1("output\bubbleSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile1("output/bubbleSort_time.csv", ios::out | ios::trunc);
     
-    outputFile1 << "Quantidade de Elementos,Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
+    outputFile1 << "Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
 
     Node* head1 = nullptr;
     Node* head2 = nullptr;
@@ -42,7 +42,7 @@ int main()
         auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
         auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
-        outputFile1 << 10000 << "," << timeDuration1.count() << "," << timeDuration2.count() << endl;
+        outputFile1 << timeDuration1.count() << "," << timeDuration2.count() << endl;
         clearList(&head1);
         clearList(&head2);
     }
@@ -53,9 +53,9 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile2("output\selectionSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile2("output/selectionSort_time.csv", ios::out | ios::trunc);
     
-    outputFile2 << "Quantidade de Elementos,Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
+    outputFile2 << "Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
 
     Node* head3 = nullptr;
     Node* head4 = nullptr;
@@ -76,7 +76,7 @@ int main()
         auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
         auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
-        outputFile2 << 10000 << "," << timeDuration1.count() << "," << timeDuration2.count() << endl;
+        outputFile2 << timeDuration1.count() << "," << timeDuration2.count() << endl;
         clearList(&head3);
         clearList(&head4);
     }
@@ -87,9 +87,9 @@ int main()
 
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr)); 
-    ofstream outputFile3("output\insertSort_time.csv", ios::out | ios::trunc);
+    ofstream outputFile3("output/insertSort_time.csv", ios::out | ios::trunc);
     
-    outputFile3 << "Quantidade de Elementos,Tempo (nanossegundos)" << endl;
+    outputFile3 << "Tempo (nanossegundos)" << endl;
 
     Node* head5 = nullptr;
 
@@ -103,11 +103,37 @@ int main()
 
         auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
 
-        outputFile3 << 10000 << "," << timeDuration.count() << endl;
+        outputFile3 << timeDuration.count() << endl;
         clearList(&head5);
     }
 
     outputFile3.close();
     
+    // RADIX SORT
+
+    // Inicialização da semente do gerador de números aleatórios com o tempo atual
+    srand(time(nullptr)); 
+    ofstream outputFile4("output/radixtSort_time.csv", ios::out | ios::trunc);
+    
+    outputFile4 << "Tempo (nanossegundos)" << endl;
+
+    Node* head6 = nullptr;
+
+    for (int i = 1; i <= iNumLinhas ; i ++) 
+    {
+        addRandomElements(&head6, 10000, i);
+
+        auto timeStart = high_resolution_clock::now();
+        radixSort(&head6, 100);
+        auto timeStop = high_resolution_clock::now();
+
+        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+
+        outputFile4 << timeDuration.count() << endl;
+        clearList(&head6);
+    }
+
+    outputFile4.close();
+
     return 0;
 }

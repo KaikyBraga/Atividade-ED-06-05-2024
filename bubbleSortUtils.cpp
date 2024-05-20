@@ -31,7 +31,7 @@ void bubbleSort(Node** head)
 void optimizedBubbleSort(Node** head, int iLength)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
-    por meio do método Selection Sort de maneira otimizada.*/
+    por meio do método Bubble Sort de maneira otimizada.*/
 
     Node* ptrCurrent = *head;
 
