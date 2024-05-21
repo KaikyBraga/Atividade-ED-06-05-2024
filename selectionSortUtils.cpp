@@ -1,7 +1,15 @@
 #include <iostream>
+#include <chrono>
+#include <fstream>
 
 #include "list.h"
 #include "sortsUtils.h"
+
+using namespace std;
+
+using chrono::high_resolution_clock;
+using chrono::duration_cast;
+using chrono::nanoseconds;
 
 void selectionSort(Node** head)
 {
@@ -87,3 +95,37 @@ void addRandomElements(Node** head, int iQuantElements, int iMaxValue)
         insertEnd(head, (rand() % iMaxValue) + 1);
 }
 
+void selectionSortTime(int iNumLinhas, const string& filename) 
+{
+    // Inicialização da semente do gerador de números aleatórios com o tempo atual
+    srand(time(nullptr));
+    
+    ofstream outputFile(filename, ios::out | ios::trunc);
+    outputFile << "Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
+
+    Node* head3 = nullptr;
+    Node* head4 = nullptr;
+
+    for (int i = 1; i <= iNumLinhas; i++) {
+        addRandomElements(&head3, 10000, i);
+        head4 = copyList(&head3);
+
+        auto timeStart3 = high_resolution_clock::now();
+        selectionSort(&head3);
+        auto timeStop3 = high_resolution_clock::now();
+
+        auto timeStart4 = high_resolution_clock::now();
+        optimizedSelectionSort(&head4);
+        auto timeStop4 = high_resolution_clock::now();
+
+        auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
+        auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
+
+        outputFile << timeDuration3.count() << "," << timeDuration4.count() << endl;
+
+        clearList(&head3);
+        clearList(&head4);
+    }
+
+    outputFile.close();
+}

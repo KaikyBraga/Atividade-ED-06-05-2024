@@ -1,7 +1,15 @@
 #include <iostream>
+#include <chrono>
+#include <fstream>
 
 #include "list.h"
 #include "sortsUtils.h"
+
+using namespace std;
+
+using chrono::high_resolution_clock;
+using chrono::duration_cast;
+using chrono::nanoseconds;
 
 void insertSort(Node** head)
 {
@@ -50,4 +58,29 @@ void insertSort(Node** head)
         // Preparando o Loop Externo para a próxima iteração
         ptrOuterNode = ptrOuterNode->ptrNext;
     }
+}
+
+void insertSortTime(int iNumLinhas, const string& filename) {
+    // Inicialização da semente do gerador de números aleatórios com o tempo atual
+    srand(time(nullptr));
+
+    ofstream outputFile(filename, ios::out | ios::trunc);
+    outputFile << "Tempo (nanossegundos)" << endl;
+
+    Node* head = nullptr;
+
+    for (int i = 1; i <= iNumLinhas; i++) {
+        addRandomElements(&head, 10000, i);
+
+        auto timeStart = high_resolution_clock::now();
+        insertSort(&head);
+        auto timeStop = high_resolution_clock::now();
+
+        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+
+        outputFile << timeDuration.count() << endl;
+        clearList(&head);
+    }
+
+    outputFile.close();
 }
