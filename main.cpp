@@ -63,20 +63,20 @@ int main()
     for (int i = 1; i <= iNumLinhas ; i ++) 
     {
         addRandomElements(&head3, 10000, i);
-        head2 = copyList(&head3);
+        head4 = copyList(&head3);
 
-        auto timeStart1 = high_resolution_clock::now();
+        auto timeStart3 = high_resolution_clock::now();
         selectionSort(&head3);
-        auto timeStop1 = high_resolution_clock::now();
+        auto timeStop3 = high_resolution_clock::now();
 
-        auto timeStart2 = high_resolution_clock::now();
+        auto timeStart4 = high_resolution_clock::now();
         optimizedSelectionSort(&head4);
-        auto timeStop2 = high_resolution_clock::now();
+        auto timeStop4 = high_resolution_clock::now();
 
-        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
-        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
+        auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
+        auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
 
-        outputFile2 << timeDuration1.count() << "," << timeDuration2.count() << endl;
+        outputFile2 << timeDuration3.count() << "," << timeDuration4.count() << endl;
         clearList(&head3);
         clearList(&head4);
     }
@@ -97,13 +97,13 @@ int main()
     {
         addRandomElements(&head5, 10000, i);
 
-        auto timeStart = high_resolution_clock::now();
+        auto timeStart5 = high_resolution_clock::now();
         insertSort(&head5);
-        auto timeStop = high_resolution_clock::now();
+        auto timeStop5 = high_resolution_clock::now();
 
-        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+        auto timeDuration5 = duration_cast<nanoseconds>(timeStop5 - timeStart5);
 
-        outputFile3 << timeDuration.count() << endl;
+        outputFile3 << timeDuration5.count() << endl;
         clearList(&head5);
     }
 
@@ -123,13 +123,13 @@ int main()
     {
         addRandomElements(&head6, 10000, i);
 
-        auto timeStart = high_resolution_clock::now();
-        radixSort(&head6, 100);
-        auto timeStop = high_resolution_clock::now();
+        auto timeStart6 = high_resolution_clock::now();
+        radixSort(&head6, 10000);
+        auto timeStop6 = high_resolution_clock::now();
 
-        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
+        auto timeDuration6 = duration_cast<nanoseconds>(timeStop6 - timeStart6);
 
-        outputFile4 << timeDuration.count() << endl;
+        outputFile4 << timeDuration6.count() << endl;
         clearList(&head6);
     }
 

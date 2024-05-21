@@ -3,35 +3,13 @@
 #include "list.h"
 #include "sortsUtils.h"
 
-int MaxList(Node* head)
-{
-    /*
-    Essa função calcula o valor máximo de uma lista.
-    */
-
-    int iMaxValue = head->iPayload;
-    Node* current = head;
-
-    while (current != nullptr)
-    {
-        if (current->iPayload > iMaxValue)
-        {
-            iMaxValue = current->iPayload;
-        }
-
-        current = current->ptrNext;
-    }
-
-    return iMaxValue;
-}
-
 void radixSort(Node** head, int iLength)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Radix Sort.*/
 
     Node* ptrCurrent = *head;
-    int iMaxValue = MaxList(*head);
+    int iMaxValue = maxList(*head);
 
     if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
     

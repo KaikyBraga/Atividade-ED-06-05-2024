@@ -180,3 +180,25 @@ void clearList(Node** head)
     // Por fim, deleta o primeiro nó
     deleteNode(head, ptrCurrent);
 }
+
+int maxList(Node* head)
+{
+    /*
+    Essa função calcula o valor máximo de uma lista.
+    */
+
+    int iMaxValue = head->iPayload;
+    Node* current = head;
+
+    while (current != nullptr)
+    {
+        if (current->iPayload > iMaxValue)
+        {
+            iMaxValue = current->iPayload;
+        }
+
+        current = current->ptrNext;
+    }
+
+    return iMaxValue;
+}

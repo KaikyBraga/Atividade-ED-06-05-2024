@@ -17,5 +17,6 @@ void swapValue(Node*, Node*);
 void addRandomElements(Node**, int, int);
 Node* copyList(Node**);
 void clearList(Node**);
+int maxList(Node*);
 
 #endif
