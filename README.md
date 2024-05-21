@@ -9,5 +9,6 @@ Esse repositório tem o objetivo de realizar diferentes algoritmos de ordenaçã
 - Bubble Sort
 - Selection Sort
 - Insertion Sort
+- Radix Sort
 
 **OBS:** Dentro da pasta `output`, é possível encontrar arquivos CSV com os tempos de execução dos algoritmos com listas duplamente encadeadas de 10000 elementos.
