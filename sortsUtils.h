@@ -13,6 +13,7 @@ void insertSort(Node**);
 void insertSortTime(int, const string&); 
 
 void radixSort(Node**, int);
+void tutorialRadixSort();
 void radixSortTime(int, const string&); 
 
 #endif

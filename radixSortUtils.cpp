@@ -46,6 +46,40 @@ void radixSort(Node** head, int iLength)
     }
 }
 
+void tutorialRadixSort()
+{
+    /*
+    Mostra para o usuário um tutorial de como funciona o algoritmo de ordenação
+    Radix Sort.
+    */
+
+    cout << "O Radix Sort é um algoritmo de ordenação que utiliza uma comparação entre os algarismos de mesma posição da lista." << endl;
+    cout << "Por exemplo, ele compara todas as unidades, em seguida todas as dezenas, e assim por diante." << endl;
+    cout << endl;
+
+    cout << "EXEMPLO:" << endl;
+    cout << "-----------------------------" << endl;
+    cout << "INPUT: [43 79 140 26 721 330]" << endl;
+    cout << "-----------------------------" << endl;
+    cout << "Algarismos das unidades: [3 9 0 6 1 0]" << endl;
+    cout << endl;
+    cout << "Ordenamos a lista referente à ordenação das unidades:" << endl;
+    cout << "LISTA: [140 330 721 43 26 79]" << endl;
+    cout << "-----------------------------" << endl;
+    cout << "Algarismos das dezenas: [4 3 2 4 2 7]" << endl;
+    cout << endl;
+    cout << "Ordenamos a lista referente à ordenação das dezenas:" << endl;
+    cout << "LISTA: [721 26 330 140 43 79]" << endl;
+    cout << "-----------------------------" << endl;
+    cout << "Algarismos das centenas: [7 0 3 1 0 0]" << endl;
+    cout << endl;
+    cout << "Ordenamos a lista referente à ordenação das centenas:" << endl;
+    cout << "LISTA: [26 43 79 140 330 721]" << endl;
+    cout << "-----------------------------" << endl;
+    cout << "Chegamos ao último algarismo (máximo), encerrando o algoritmo!" << endl;
+    cout << "OUTPUT: [26 43 79 140 330 721]" << endl;
+}
+
 void radixSortTime(int iNumLinhas, const string& filename) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
