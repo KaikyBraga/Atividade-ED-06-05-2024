@@ -1,15 +1,6 @@
 #include <iostream>
-#include <chrono>
-#include <fstream>
-
 #include "list.h"
 #include "sortsUtils.h"
-
-using namespace std;
-
-using chrono::high_resolution_clock;
-using chrono::duration_cast;
-using chrono::nanoseconds;
 
 int main() 
 {
