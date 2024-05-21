@@ -11,37 +11,54 @@ using chrono::high_resolution_clock;
 using chrono::duration_cast;
 using chrono::nanoseconds;
 
-void radixSort(Node** head, int iLength)
+void radixSort(Node** head)
 {
-    /*Essa função realiza a ordenação de uma lista duplamente encadeada 
-    por meio do método Radix Sort.*/
+    /* Essa função realiza a ordenação de uma lista duplamente encadeada 
+       por meio do método Radix Sort. */
 
-    Node* ptrCurrent = *head;
+    // Caso a lista não tenha elementos ou tiver apenas um nó
+    if (*head == nullptr || (*head)->ptrNext == nullptr)
+        return;
+
+    // Valor máximo na lista
     int iMaxValue = maxList(*head);
 
-    if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
-    
+    // Loop para cada dígito no valor máximo
     for (int iExp = 1; iMaxValue / iExp > 0; iExp *= 10)
     {
-        bool bUnordered = false;
-        int i = 0;
-        for (int iOuterLoop = 0; iOuterLoop < iLength - 1; iOuterLoop++)
+        Node* ptrOuterNode = (*head)->ptrNext;
+        
+        // Loop externo para percorrer todos os nós da lista
+        while (ptrOuterNode != nullptr)
         {
-            bUnordered = false;
-
-            for (int iInnerLoop = 0; iInnerLoop < (iLength - 1) - iOuterLoop; iInnerLoop++)
+            // Valor do nó atual para inserção
+            int iInsertValue = ptrOuterNode->iPayload;
+            Node* ptrInnerNode = ptrOuterNode->ptrPrev;
+            
+            // Loop interno para encontrar a posição correta para inserção
+            while (ptrInnerNode != nullptr && (iInsertValue / iExp) % 10 < (ptrInnerNode->iPayload / iExp) % 10)
             {
-                if (((ptrCurrent->iPayload / iExp) % 10) > ((ptrCurrent->ptrNext->iPayload / iExp) % 10))
-                {
-                    swapValue(ptrCurrent, ptrCurrent->ptrNext);
-                    bUnordered = true;
-                }
-
-                ptrCurrent = ptrCurrent->ptrNext;
+                // Caso o valor do dígito seja maior que o do valor do dígito da troca,
+                // então o valor do sucessor desse nó é alterado para o valor desse nó
+                ptrInnerNode->ptrNext->iPayload = ptrInnerNode->iPayload;
+                ptrInnerNode = ptrInnerNode->ptrPrev;
             }
 
-            ptrCurrent = *head;
-            if (bUnordered == false) break;    
+            // Caso o Loop Interno percorra todos os nós anteriores ao Loop Externo
+            if (ptrInnerNode == nullptr)
+            {
+                // Se não houver nó anterior, o valor é inserido no head da lista
+                (*head)->iPayload = iInsertValue;
+            }
+
+            else
+            {
+                // Insere o valor após o nó anterior encontrado
+                ptrInnerNode->ptrNext->iPayload = iInsertValue;
+            }
+
+            // Preparando o Loop Externo para a próxima iteração
+            ptrOuterNode = ptrOuterNode->ptrNext;
         }
     }
 }
@@ -94,7 +111,7 @@ void radixSortTime(int iNumLinhas, const string& filename)
         addRandomElements(&head, 10000, i);
 
         auto timeStart = high_resolution_clock::now();
-        radixSort(&head, 10000);
+        radixSort(&head);
         auto timeStop = high_resolution_clock::now();
 
         auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
