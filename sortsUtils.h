@@ -14,7 +14,7 @@ void selectionSortTime(int, int, const string&);
 template <typename T> void insertSort(Node<T>**);
 void insertSortTime(int, int, const string&); 
 
-template <typename T> void radixSort(Node<T>**, int);
+template <typename T> void radixSort(Node<T>**);
 void radixSortTime(int, int, const string&); 
 void tutorialRadixSort();
 

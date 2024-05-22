@@ -9,9 +9,9 @@ struct Node
     Node* ptrPrev;
 };
 
-template <typename T> Node<T>* createNode(int);
-template <typename T> void insertFront(Node<T>**, int);
-template <typename T> void insertEnd(Node<int>**, int);
+template <typename T> Node<T>* createNode(T);
+template <typename T> void insertFront(Node<T>**, T);
+template <typename T> void insertEnd(Node<T>**, T);
 template <typename T> void deleteNode(Node<T>**, Node<T>*);
 template <typename T> void displayList(Node<T>*);
 template <typename T> void swapValue(Node<T>*, Node<T>*);

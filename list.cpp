@@ -78,7 +78,7 @@ void insertFront(Node<T>** head, T payload)
 }
 
 template <typename T> 
-void insertEnd(Node<T>** head, int payload)
+void insertEnd(Node<T>** head, T payload)
 {
     // Essa função inserre um novo nó no final da lista
 
@@ -219,4 +219,15 @@ T maxList(Node<T>* head)
     }
 
     return iMaxValue;
-};
+}
+
+template Node<int>* createNode(int);
+template void insertFront(Node<int>**, int);
+template void insertEnd(Node<int>**, int);
+template void deleteNode(Node<int>**, Node<int>*);
+template void displayList(Node<int>*);
+template void swapValue(Node<int>*, Node<int>*);
+void addRandomElements(Node<int>**, int, int);
+template Node<int>* copyList(Node<int>**);
+template void clearList(Node<int>**);
+template int maxList(Node<int>*);
