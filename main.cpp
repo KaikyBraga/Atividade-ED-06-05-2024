@@ -5,16 +5,16 @@
 int main() 
 {
     // BUBBLE SORT
-    bubbleSortTime(100, "output/bubbleSort_time.csv");
+    bubbleSortTime(100, 10000, "output/bubbleSort_time.csv");
 
     // SELECTION SORT
-    selectionSortTime(100, "output/selectionSort_time.csv");
+    selectionSortTime(100, 10000, "output/selectionSort_time.csv");
 
     // INSECTION SORT
-    insertSortTime(100, "output/insertSort_time.csv");
+    insertSortTime(100, 10000, "output/insertSort_time.csv");
     
     // RADIX SORT
-    radixSortTime(100, "output/radixSort_time.csv");
+    radixSortTime(100, 10000, "output/radixSort_time.csv");
 
     return 0;
 }

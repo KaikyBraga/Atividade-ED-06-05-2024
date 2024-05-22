@@ -11,7 +11,8 @@ using chrono::high_resolution_clock;
 using chrono::duration_cast;
 using chrono::nanoseconds;
 
-void insertSort(Node** head)
+template <typename T> 
+void insertSort(Node<T>** head)
 {
     /*
     Esta função implementa o método de ordenação de uma lista duplamente encadeada
@@ -22,23 +23,23 @@ void insertSort(Node** head)
     if (head == nullptr || (*head)->ptrNext == nullptr)
         return; 
 
-    Node* ptrOuterNode = (*head)->ptrNext; 
-    Node* ptrInnerNode = nullptr;
-    int iInsertValue = 0;
+    Node<T>* ptrOuterNode = (*head)->ptrNext; 
+    Node<T>* ptrInnerNode = nullptr;
+    T insertValue;
 
     // Loop Externo (Começa sempre no segundo nó)
     while (ptrOuterNode != nullptr)
     {
         // Valor de troca
-        iInsertValue = ptrOuterNode->iPayload;
+        insertValue = ptrOuterNode->payload;
 
         // Loop Interno (Começa sempre do nó anterior do Loop Externo)
         ptrInnerNode = ptrOuterNode->ptrPrev;
-        while (ptrInnerNode != nullptr && iInsertValue < ptrInnerNode->iPayload)
+        while (ptrInnerNode != nullptr && insertValue < ptrInnerNode->payload)
         {
             // Caso o valor do nó seja maior que o do valor de troca,
             // então o valor do sucessor desse nó é alterado para o valor desse nó
-            ptrInnerNode->ptrNext->iPayload = ptrInnerNode->iPayload;
+            ptrInnerNode->ptrNext->payload = ptrInnerNode->payload;
 
             // Pegando o nó anterior no Loop Interno
             ptrInnerNode = ptrInnerNode->ptrPrev;
@@ -47,12 +48,12 @@ void insertSort(Node** head)
         // Caso o Loop Interno percorra todos os nós anteriores ao Loop Externo
         if (ptrInnerNode == nullptr) 
         {
-            (*head)->iPayload = iInsertValue;
+            (*head)->payload = insertValue;
         } 
 
         else 
         {
-            ptrInnerNode->ptrNext->iPayload = iInsertValue;
+            ptrInnerNode->ptrNext->payload = insertValue;
         }
 
         // Preparando o Loop Externo para a próxima iteração
@@ -60,17 +61,19 @@ void insertSort(Node** head)
     }
 }
 
-void insertSortTime(int iNumLinhas, const string& filename) {
+template <typename T> 
+void insertSortTime(int iNumLinhas, int iLength, const string& filename) 
+{
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
 
     ofstream outputFile(filename, ios::out | ios::trunc);
     outputFile << "Tempo (nanossegundos)" << endl;
 
-    Node* head = nullptr;
+    Node<T>* head = nullptr;
 
     for (int i = 1; i <= iNumLinhas; i++) {
-        addRandomElements(&head, 10000, i);
+        addRandomElements(&head, iLength, i);
 
         auto timeStart = high_resolution_clock::now();
         insertSort(&head);

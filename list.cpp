@@ -3,15 +3,16 @@
 
 using namespace std;
 
-Node* createNode(int iPayload)
+template <typename T>
+Node<T>* createNode(T payload)
 {
     // Essa função cria um novo nó
 
     // Alocando memória para um nó
-    Node* temp = (Node*) malloc(sizeof(Node));
+    Node<T>* temp = (Node<T>*) malloc(sizeof(Node<T>));
     
     // Carga do nó
-    temp->iPayload = iPayload;
+    temp->payload = payload;
     
     // Inicializando nó apontando para nulo (Sem nós na frente e na traseira)
     temp->ptrNext = nullptr;
@@ -20,7 +21,8 @@ Node* createNode(int iPayload)
     return temp;
 }
 
-void displayList(Node* node)
+template <typename T> 
+void displayList(Node<T>* node)
 {
     // Essa função printa a lista duplamente encadeada
 
@@ -39,25 +41,26 @@ void displayList(Node* node)
     }
     
     // Caso o nó passado seja o primeiro elemento da lista
-    Node* temp = node;
+    Node<T>* temp = node;
      
     cout << "Payload: ";
     
     // Print de todos os elementos da lista
     while(temp != nullptr)
     {
-        cout << temp->iPayload<< " ";
+        cout << temp->payload<< " ";
         temp = temp->ptrNext;
     }
     
     cout << endl;
 }
 
-void insertFront(Node** head, int iPayload)
+template <typename T>
+void insertFront(Node<T>** head, T payload)
 {
     // Essa função insere um nó no início de uma lista duplamente encadeada
 
-    Node* newNode = createNode(iPayload);
+    Node<T>* newNode = createNode(payload);
     // newNode->ptrPrev = nullptr; (Cuidado Dobrado, não é necessário nesse caso)
     
     // Caso exista pelo menos um nó na lista
@@ -74,11 +77,12 @@ void insertFront(Node** head, int iPayload)
     (*head) = newNode;
 }
 
-void insertEnd(Node** head, int iPayload)
+template <typename T> 
+void insertEnd(Node<T>** head, int payload)
 {
     // Essa função inserre um novo nó no final da lista
 
-    Node* newNode = createNode(iPayload);   
+    Node<T>* newNode = createNode(payload);   
     //newNode->ptrNext = nullptr;
 
     // Caso a lista seja nula, inserimos um novo nó no final passado
@@ -90,7 +94,7 @@ void insertEnd(Node** head, int iPayload)
     }
 
     // Caso a lista não seja nula
-    Node* temp = (*head);
+    Node<T>* temp = (*head);
 
     // Percorremos a lista até seu fim (ptrNext do último nó é nulo)
     while(temp->ptrNext != nullptr)
@@ -107,7 +111,8 @@ void insertEnd(Node** head, int iPayload)
     temp->ptrNext = newNode; 
 }
 
-void deleteNode(Node** head, Node* ptrDelete)
+template <typename T>
+void deleteNode(Node<T>** head, Node<T>* ptrDelete)
 {
     // Essa função deleta um nó específico da lista
 
@@ -133,36 +138,48 @@ void deleteNode(Node** head, Node* ptrDelete)
     free(ptrDelete);
 }
 
-void swapValue(Node* node1, Node* node2)
+template <typename T>
+void swapValue(Node<T>* node1, Node<T>* node2)
 {
     // Essa função troca os valores dos nós passados.
 
-    int iTemp = node1->iPayload;
-    node1->iPayload = node2->iPayload;
-    node2->iPayload = iTemp;
+    T temp = node1->payload;
+    node1->payload = node2->payload;
+    node2->payload = temp;
 }
 
-Node* copyList(Node** head)
+void addRandomElements(Node<int>** head, int iQuantElements, int iMaxValue)
+{
+    // Essa função adiciona elementos aleatórios em uma Lista duplamente encadeada.
+    // É possível passar o Valor máximo da carga Payload.
+
+    for (int i=0; i < iQuantElements; i++)
+        insertEnd(head, (rand() % iMaxValue) + 1);
+}
+
+template <typename T>
+Node<T>* copyList(Node<T>** head)
 {
     // Essa função copia uma lista duplamente encadeada
 
-    Node* ptrCurrent = *head;
-    Node* newHead = createNode(ptrCurrent->iPayload);
+    Node<T>* ptrCurrent = *head;
+    Node<T>* newHead = createNode(ptrCurrent->payload);
 
     while (ptrCurrent != nullptr)
     {
-        insertEnd(&newHead, ptrCurrent->iPayload);
+        insertEnd(&newHead, ptrCurrent->payload);
         ptrCurrent = ptrCurrent->ptrNext;
     }
     
     return newHead;
 }
 
-void clearList(Node** head)
+template <typename T>
+void clearList(Node<T>** head)
 {
     // Essa função esvazia uma lista duplamente encadeada
 
-    Node* ptrCurrent = *head;
+    Node<T>* ptrCurrent = *head;
 
     // Confere se já está vazia
     if (ptrCurrent == nullptr) return;
@@ -181,24 +198,25 @@ void clearList(Node** head)
     deleteNode(head, ptrCurrent);
 }
 
-int maxList(Node* head)
+template <typename T>
+T maxList(Node<T>* head)
 {
     /*
     Essa função calcula o valor máximo de uma lista.
     */
 
-    int iMaxValue = head->iPayload;
-    Node* current = head;
+    int iMaxValue = head->payload;
+    Node<T>* current = head;
 
     while (current != nullptr)
     {
-        if (current->iPayload > iMaxValue)
+        if (current->payload > iMaxValue)
         {
-            iMaxValue = current->iPayload;
+            iMaxValue = current->payload;
         }
 
         current = current->ptrNext;
     }
 
     return iMaxValue;
-}
+};

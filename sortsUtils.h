@@ -1,19 +1,21 @@
 #ifndef sortUtilsH
 #define sortUtilsH
 
-void bubbleSort(Node**);
-void optimizedBubbleSort(Node**, int);
-void bubbleSortTime(int, const string&);
+using std::string;
 
-void selectionSort(Node**);
-void optimizedSelectionSort(Node**);
-void selectionSortTime(int, const string&); 
+template <typename T> void bubbleSort(Node<T>**);
+template <typename T> void optimizedBubbleSort(Node<T>**, int);
+void bubbleSortTime(int, int, const string&);
 
-void insertSort(Node**);
-void insertSortTime(int, const string&); 
+template <typename T> void selectionSort(Node<T>**);
+template <typename T> void optimizedSelectionSort(Node<T>**);
+void selectionSortTime(int, int, const string&); 
 
-void radixSort(Node**, int);
+template <typename T> void insertSort(Node<T>**);
+void insertSortTime(int, int, const string&); 
+
+template <typename T> void radixSort(Node<T>**, int);
+void radixSortTime(int, int, const string&); 
 void tutorialRadixSort();
-void radixSortTime(int, const string&); 
 
 #endif

@@ -11,14 +11,15 @@ using chrono::high_resolution_clock;
 using chrono::duration_cast;
 using chrono::nanoseconds;
 
-void selectionSort(Node** head)
+template <typename T> 
+void selectionSort(Node<T>** head)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Selection Sort*/
 
     // Inicializando nós para percorrerem a lista
-    Node* ptrOuterNode = *head;
-    Node* ptrInnerNode = *head;
+    Node<T>* ptrOuterNode = *head;
+    Node<T>* ptrInnerNode = *head;
 
     // Realizando verificação para todos os nós
     while(ptrOuterNode != nullptr)
@@ -30,7 +31,7 @@ void selectionSort(Node** head)
         while (ptrInnerNode != nullptr)
         {
             // Condição de Troca
-            if (ptrOuterNode->iPayload > ptrInnerNode->iPayload)
+            if (ptrOuterNode->payload > ptrInnerNode->payload)
             {
                 swapValue(ptrOuterNode, ptrInnerNode);
             }
@@ -42,17 +43,18 @@ void selectionSort(Node** head)
     }
 }
 
-void optimizedSelectionSort(Node** head)
+template <typename T> 
+void optimizedSelectionSort(Node<T>** head)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Selection Sort de maneira otimizada.*/
 
-    int iMinValue = 0;
+    T minValue = 0;
 
     // Inicializando nós para percorrerem a lista
-    Node* ptrOuterNode = *head;
-    Node* ptrInnerNode = *head;
-    Node* ptrSwapNode = *head;
+    Node<T>* ptrOuterNode = *head;
+    Node<T>* ptrInnerNode = *head;
+    Node<T>* ptrSwapNode = *head;
 
     // Realizando verificação para todos os nós
     while(ptrOuterNode != nullptr)
@@ -64,15 +66,15 @@ void optimizedSelectionSort(Node** head)
         ptrSwapNode = ptrOuterNode;
 
         // O valor mínimo é inicialiazado com valor do nó de fora
-        iMinValue = ptrOuterNode->iPayload;
+        minValue = ptrOuterNode->payload;
 
         // Verificação para todos nós posteriores ao de fora
         while (ptrInnerNode != nullptr)
         {
             // Condição de Troca
-            if (iMinValue > ptrInnerNode->iPayload)
+            if (minValue > ptrInnerNode->payload)
             {
-                iMinValue = ptrInnerNode->iPayload;
+                minValue = ptrInnerNode->payload;
                 ptrSwapNode = ptrInnerNode;
             }
 
@@ -86,16 +88,7 @@ void optimizedSelectionSort(Node** head)
     }
 }
 
-void addRandomElements(Node** head, int iQuantElements, int iMaxValue)
-{
-    // Essa função adiciona elementos aleatórios em uma Lista duplamente encadeada.
-    // É possível passar o Valor máximo da carga Payload.
-
-    for (int i=0; i < iQuantElements; i++)
-        insertEnd(head, (rand() % iMaxValue) + 1);
-}
-
-void selectionSortTime(int iNumLinhas, const string& filename) 
+void selectionSortTime(int iNumLinhas, int iLength, const string& filename) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
@@ -103,28 +96,29 @@ void selectionSortTime(int iNumLinhas, const string& filename)
     ofstream outputFile(filename, ios::out | ios::trunc);
     outputFile << "Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
 
-    Node* head3 = nullptr;
-    Node* head4 = nullptr;
+    Node<int>* head1 = nullptr;
+    Node<int>* head2 = nullptr;
 
-    for (int i = 1; i <= iNumLinhas; i++) {
-        addRandomElements(&head3, 10000, i);
-        head4 = copyList(&head3);
+    for (int i = 1; i <= iNumLinhas; i++) 
+    {
+        addRandomElements(&head1, iLength, i);
+        head2 = copyList(&head1);
 
-        auto timeStart3 = high_resolution_clock::now();
-        selectionSort(&head3);
-        auto timeStop3 = high_resolution_clock::now();
+        auto timeStart1 = high_resolution_clock::now();
+        selectionSort(&head1);
+        auto timeStop1 = high_resolution_clock::now();
 
-        auto timeStart4 = high_resolution_clock::now();
-        optimizedSelectionSort(&head4);
-        auto timeStop4 = high_resolution_clock::now();
+        auto timeStart2 = high_resolution_clock::now();
+        optimizedSelectionSort(&head2);
+        auto timeStop2 = high_resolution_clock::now();
 
-        auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
-        auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
+        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
+        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
-        outputFile << timeDuration3.count() << "," << timeDuration4.count() << endl;
+        outputFile << timeDuration1.count() << "," << timeDuration2.count() << endl;
 
-        clearList(&head3);
-        clearList(&head4);
+        clearList(&head1);
+        clearList(&head2);
     }
 
     outputFile.close();

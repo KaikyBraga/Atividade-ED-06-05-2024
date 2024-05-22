@@ -1,22 +1,23 @@
 #ifndef listH
 #define listH
 
-typedef struct Node
+template <typename T> 
+struct Node
 {
-    int iPayload;
+    T payload;
     Node* ptrNext;
     Node* ptrPrev;
-} Node;
+};
 
-Node* createNode(int);
-void insertFront(Node**, int);
-void insertEnd(Node**, int);
-void deleteNode(Node**, Node*);
-void displayList(Node*);
-void swapValue(Node*, Node*);
-void addRandomElements(Node**, int, int);
-Node* copyList(Node**);
-void clearList(Node**);
-int maxList(Node*);
+template <typename T> Node<T>* createNode(int);
+template <typename T> void insertFront(Node<T>**, int);
+template <typename T> void insertEnd(Node<int>**, int);
+template <typename T> void deleteNode(Node<T>**, Node<T>*);
+template <typename T> void displayList(Node<T>*);
+template <typename T> void swapValue(Node<T>*, Node<T>*);
+void addRandomElements(Node<int>**, int, int);
+template <typename T> Node<T>* copyList(Node<T>**);
+template <typename T> void clearList(Node<T>**);
+template <typename T> T maxList(Node<T>*);
 
 #endif

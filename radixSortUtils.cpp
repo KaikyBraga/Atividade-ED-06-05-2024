@@ -11,7 +11,8 @@ using chrono::high_resolution_clock;
 using chrono::duration_cast;
 using chrono::nanoseconds;
 
-void radixSort(Node** head)
+template <typename T> 
+void radixSort(Node<T>** head)
 {
     /* Essa função realiza a ordenação de uma lista duplamente encadeada 
        por meio do método Radix Sort. */
@@ -26,21 +27,21 @@ void radixSort(Node** head)
     // Loop para cada dígito no valor máximo
     for (int iExp = 1; iMaxValue / iExp > 0; iExp *= 10)
     {
-        Node* ptrOuterNode = (*head)->ptrNext;
+        Node<T>* ptrOuterNode = (*head)->ptrNext;
         
         // Loop externo para percorrer todos os nós da lista
         while (ptrOuterNode != nullptr)
         {
             // Valor do nó atual para inserção
-            int iInsertValue = ptrOuterNode->iPayload;
-            Node* ptrInnerNode = ptrOuterNode->ptrPrev;
+            int iInsertValue = ptrOuterNode->payload;
+            Node<T>* ptrInnerNode = ptrOuterNode->ptrPrev;
             
             // Loop interno para encontrar a posição correta para inserção
-            while (ptrInnerNode != nullptr && (iInsertValue / iExp) % 10 < (ptrInnerNode->iPayload / iExp) % 10)
+            while (ptrInnerNode != nullptr && (iInsertValue / iExp) % 10 < (ptrInnerNode->payload / iExp) % 10)
             {
                 // Caso o valor do dígito seja maior que o do valor do dígito da troca,
                 // então o valor do sucessor desse nó é alterado para o valor desse nó
-                ptrInnerNode->ptrNext->iPayload = ptrInnerNode->iPayload;
+                ptrInnerNode->ptrNext->payload = ptrInnerNode->payload;
                 ptrInnerNode = ptrInnerNode->ptrPrev;
             }
 
@@ -48,13 +49,13 @@ void radixSort(Node** head)
             if (ptrInnerNode == nullptr)
             {
                 // Se não houver nó anterior, o valor é inserido no head da lista
-                (*head)->iPayload = iInsertValue;
+                (*head)->payload = iInsertValue;
             }
 
             else
             {
                 // Insere o valor após o nó anterior encontrado
-                ptrInnerNode->ptrNext->iPayload = iInsertValue;
+                ptrInnerNode->ptrNext->payload = iInsertValue;
             }
 
             // Preparando o Loop Externo para a próxima iteração
@@ -97,7 +98,8 @@ void tutorialRadixSort()
     cout << "OUTPUT: [26 43 79 140 330 721]" << endl;
 }
 
-void radixSortTime(int iNumLinhas, const string& filename) 
+template <typename T> 
+void radixSortTime(int iNumLinhas, int iLength, const string& filename) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
@@ -105,10 +107,10 @@ void radixSortTime(int iNumLinhas, const string& filename)
     ofstream outputFile(filename, ios::out | ios::trunc);
     outputFile << "Tempo (nanossegundos)" << endl;
 
-    Node* head = nullptr;
+    Node<int>* head = nullptr;
 
     for (int i = 1; i <= iNumLinhas; i++) {
-        addRandomElements(&head, 10000, i);
+        addRandomElements(&head, iLength, i);
 
         auto timeStart = high_resolution_clock::now();
         radixSort(&head);

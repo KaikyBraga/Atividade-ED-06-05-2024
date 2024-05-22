@@ -11,13 +11,14 @@ using chrono::high_resolution_clock;
 using chrono::duration_cast;
 using chrono::nanoseconds;
 
-void bubbleSort(Node** head)
+template <typename T> 
+void bubbleSort(Node<T>** head)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Bubble Sort*/
 
-    Node* ptrOuterNode = *head;
-    Node* ptrInnerNode = *head;
+    Node<T>* ptrOuterNode = *head;
+    Node<T>* ptrInnerNode = *head;
 
     if (ptrOuterNode == nullptr || ptrOuterNode->ptrNext == nullptr) return;
     
@@ -27,7 +28,7 @@ void bubbleSort(Node** head)
 
         while (ptrInnerNode->ptrNext != nullptr)
         {
-            if (ptrInnerNode->iPayload > ptrInnerNode->ptrNext->iPayload)
+            if (ptrInnerNode->payload > ptrInnerNode->ptrNext->payload)
                 swapValue(ptrInnerNode, ptrInnerNode->ptrNext);
 
             ptrInnerNode = ptrInnerNode->ptrNext;
@@ -36,24 +37,25 @@ void bubbleSort(Node** head)
     }
 }
 
-void optimizedBubbleSort(Node** head, int iLength)
+template <typename T> 
+void optimizedBubbleSort(Node<T>** head, int iLength)
 {
     /*Essa função realiza a ordenação de uma lista duplamente encadeada 
     por meio do método Bubble Sort de maneira otimizada.*/
 
-    Node* ptrCurrent = *head;
+    Node<T>* ptrCurrent = *head;
 
     if (ptrCurrent == nullptr || ptrCurrent->ptrNext == nullptr) return;
     
     bool bUnordered = false;
-    int i = 0;
+
     for (int iOuterLoop = 0; iOuterLoop < iLength - 1; iOuterLoop++)
     {
         bUnordered = false;
 
         for (int iInnerLoop = 0; iInnerLoop < (iLength - 1) - iOuterLoop; iInnerLoop++)
         {
-            if (ptrCurrent->iPayload > ptrCurrent->ptrNext->iPayload)
+            if (ptrCurrent->payload > ptrCurrent->ptrNext->payload)
             {
                 swapValue(ptrCurrent, ptrCurrent->ptrNext);
                 bUnordered = true;
@@ -66,7 +68,8 @@ void optimizedBubbleSort(Node** head, int iLength)
     }
 }
 
-void bubbleSortTime(int iNumLinhas, const string& filename) 
+template <typename T> 
+void bubbleSortTime(int iNumLinhas, int iLength, const string& filename) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
@@ -74,11 +77,11 @@ void bubbleSortTime(int iNumLinhas, const string& filename)
     ofstream outputFile(filename, ios::out | ios::trunc);
     outputFile << "Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
 
-    Node* head1 = nullptr;
-    Node* head2 = nullptr;
+    Node<int>* head1 = nullptr;
+    Node<int>* head2 = nullptr;
    
     for (int i = 1; i <= iNumLinhas; i++) {
-        addRandomElements(&head1, 10000, i);
+        addRandomElements(&head1, iLength, i);
         head2 = copyList(&head1);
 
         auto timeStart1 = high_resolution_clock::now();
