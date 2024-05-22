@@ -88,12 +88,12 @@ void optimizedSelectionSort(Node<T>** head)
     }
 }
 
-void selectionSortTime(int iNumLinhas, int iLength, const string& filename) 
+void selectionSortTime(int iNumLinhas, int iLength, const string& strFILENAME) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
     
-    ofstream outputFile(filename, ios::out | ios::trunc);
+    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
     outputFile << "Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
 
     Node<int>* head1 = nullptr;

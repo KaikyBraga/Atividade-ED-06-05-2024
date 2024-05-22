@@ -68,19 +68,19 @@ void optimizedBubbleSort(Node<T>** head, int iLength)
     }
 }
 
-template <typename T> 
-void bubbleSortTime(int iNumLinhas, int iLength, const string& filename) 
+void bubbleSortTime(int iNumLinhas, int iLength, const string& strFILENAME) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
     
-    ofstream outputFile(filename, ios::out | ios::trunc);
+    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
     outputFile << "Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
 
     Node<int>* head1 = nullptr;
     Node<int>* head2 = nullptr;
    
-    for (int i = 1; i <= iNumLinhas; i++) {
+    for (int i = 1; i <= iNumLinhas; i++) 
+    {
         addRandomElements(&head1, iLength, i);
         head2 = copyList(&head1);
 

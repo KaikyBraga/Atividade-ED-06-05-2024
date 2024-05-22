@@ -60,19 +60,19 @@ void insertSort(Node<T>** head)
         ptrOuterNode = ptrOuterNode->ptrNext;
     }
 }
-
-template <typename T> 
-void insertSortTime(int iNumLinhas, int iLength, const string& filename) 
+ 
+void insertSortTime(int iNumLinhas, int iLength, const string& strFILENAME) 
 {
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
 
-    ofstream outputFile(filename, ios::out | ios::trunc);
+    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
     outputFile << "Tempo (nanossegundos)" << endl;
 
-    Node<T>* head = nullptr;
+    Node<int>* head = nullptr;
 
-    for (int i = 1; i <= iNumLinhas; i++) {
+    for (int i = 1; i <= iNumLinhas; i++) 
+    {
         addRandomElements(&head, iLength, i);
 
         auto timeStart = high_resolution_clock::now();

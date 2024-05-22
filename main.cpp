@@ -15,6 +15,8 @@ int main()
     
     // RADIX SORT
     radixSortTime(100, 10000, "output/radixSort_time.csv");
+    
+    tutorialRadixSort();    
 
     return 0;
 }
