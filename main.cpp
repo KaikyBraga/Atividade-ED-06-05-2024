@@ -1,6 +1,7 @@
 #include <iostream>
 #include "list.h"
 #include "sortsUtils.h"
+#include "tree.h"
 
 int main() 
 {

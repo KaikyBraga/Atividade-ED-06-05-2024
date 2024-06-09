@@ -1,5 +1,6 @@
 #include <iostream>
 #include "list.h"
+#include "tree.h"
 
 using namespace std;
 
@@ -11,6 +12,12 @@ Node<T>* createNode(T payload)
     // Alocando memória para um nó
     Node<T>* temp = (Node<T>*) malloc(sizeof(Node<T>));
     
+    if (temp == nullptr)
+    {
+        cerr << "Erro em createNode: malloc" << endl;
+        exit(1);
+    }
+
     // Carga do nó
     temp->payload = payload;
     
@@ -231,3 +238,5 @@ void addRandomElements(Node<int>**, int, int);
 template Node<int>* copyList(Node<int>**);
 template void clearList(Node<int>**);
 template int maxList(Node<int>*);
+
+template Node<NodeTr<int>*>* createNode<NodeTr<int>*>(NodeTr<int>*);
