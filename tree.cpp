@@ -1,8 +1,13 @@
 #include <iostream>
+#include <chrono>
+#include <fstream>
 #include "list.h"
 #include "tree.h"
 
 using namespace std;
+using chrono::high_resolution_clock;
+using chrono::duration_cast;
+using chrono::nanoseconds;
 
 template <typename T>
 NodeTr<T>* createNodeTree(T tValue)
@@ -41,6 +46,60 @@ NodeTr<T>* insertNodeTree(NodeTr<T>* ptrStartingNode, T tValue)
     
     return ptrStartingNode;
 }
+
+template <typename T>
+NodeTr<T>* lesserLeaf(NodeTr<T>* startingNode)
+{
+    NodeTr<T>* ptrCurrent = startingNode;
+ 
+    while (ptrCurrent && ptrCurrent->ptrLeft != nullptr) ptrCurrent = ptrCurrent->ptrLeft;
+    
+    return ptrCurrent;
+}
+
+template <typename T>
+NodeTr<T>* deleteNodeTree(NodeTr<T>* startingNode, int iData)
+{
+    if (startingNode == nullptr) return nullptr;
+    
+    if (iData < startingNode->payload) startingNode->ptrLeft = deleteNodeTree(startingNode->ptrLeft, iData);
+    else if (iData > startingNode->payload) startingNode->ptrRight = deleteNodeTree(startingNode->ptrRight, iData);
+    else
+    {
+        NodeTr<T>* ptrTemp = nullptr;
+        
+        if (startingNode->ptrLeft == nullptr)
+        {
+            ptrTemp = startingNode->ptrRight;
+            free(startingNode);
+            return ptrTemp;
+        }
+        else if (startingNode->ptrRight == nullptr)
+        {
+            ptrTemp = startingNode->ptrLeft;
+            free(startingNode);
+            return ptrTemp;            
+        }
+        
+        ptrTemp = lesserLeaf(startingNode->ptrRight);
+        
+        startingNode->payload = ptrTemp->payload;
+        
+        startingNode->ptrRight = deleteNodeTree(startingNode->ptrRight, ptrTemp->payload);
+    }
+    
+    return startingNode;
+}
+
+template <typename T>
+void deleteTree(NodeTr<T>* startingNode) 
+{
+    while (startingNode != nullptr) 
+    {
+        startingNode = deleteNodeTree(startingNode, startingNode->payload);
+    }
+}
+
 
 template <typename T>
 void bfsTraversal(NodeTr<T>* ptrStartingNode)
@@ -169,8 +228,77 @@ NodeTr<T>* dfSearchPostOrder(NodeTr<T>* ptrStartingNode, T tData)
     return nullptr;
 }
 
+void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
+{
+    /*Essa função salva os tempos de execução de busca em árvore utilizando DFS e BFS,
+    o desempenho de criação de listas e de criação de árvores.*/
+
+    // Inicialização da semente do gerador de números aleatórios com o tempo atual
+    srand(time(nullptr));
+
+    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
+    outputFile << "Tempo Criação de Árvores,Tempo bfsTraversal,Tempo bfSearch,Tempo dfSearchPreOrder,Tempo dfSearchInOrder,Tempo dfSearchPostOrder" << endl;
+
+
+    for (int i = 1; i <= iNumLinhas; i++) 
+    {
+        // Criação de árvores com valores payLoads aleatórios
+        NodeTr<int>* root = nullptr;
+        auto timeStart1 = high_resolution_clock::now();
+        for (int iFolha = 0; iFolha < iLength; iFolha ++)
+        {
+            insertNodeTree(root, (rand() % iLength) + 1);
+        }
+        auto timeStop1 = high_resolution_clock::now();
+        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
+
+        // Tempo bfsTraversal
+        auto timeStart2 = high_resolution_clock::now();   
+        bfsTraversal(root);
+        auto timeStop2 = high_resolution_clock::now();   
+        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
+
+        // Valor a ser buscado
+        int iSortValue = (rand() % iLength) + 1;
+
+        // Tempo de Busca bfSearch
+        auto timeStart3 = high_resolution_clock::now();   
+        NodeTr<int>* NodeFound1 = bfSearch(root, iSortValue);
+        auto timeStop3 = high_resolution_clock::now();   
+        auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
+
+        // Tempo de Busca dfSearchPreOrder
+        auto timeStart4 = high_resolution_clock::now();   
+        NodeTr<int>* NodeFound2 = dfSearchPreOrder(root, iSortValue);
+        auto timeStop4 = high_resolution_clock::now();   
+        auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
+
+        // Tempo de Busca dfSearchInOrder
+        auto timeStart5 = high_resolution_clock::now();   
+        NodeTr<int>* NodeFound3 = dfSearchInOrder(root, iSortValue);
+        auto timeStop5 = high_resolution_clock::now();   
+        auto timeDuration5 = duration_cast<nanoseconds>(timeStop5 - timeStart5);
+
+        // Tempo de Busca dfSearchPostOrder
+        auto timeStart6 = high_resolution_clock::now();   
+        NodeTr<int>* NodeFound4 = dfSearchPostOrder(root, iSortValue);
+        auto timeStop6 = high_resolution_clock::now();   
+        auto timeDuration6 = duration_cast<nanoseconds>(timeStop6 - timeStart6);
+
+        // Tempos para a iteração
+        outputFile << timeDuration1.count() << "," << timeDuration2.count() << "," << timeDuration3.count() << "," << timeDuration4.count() << "," << timeDuration5.count() << "," << timeDuration6.count() << endl;
+
+        deleteTree(root);
+    }
+
+    outputFile.close();
+}
+
 template NodeTr<int>* createNodeTree(int);
 template NodeTr<int>* insertNodeTree(NodeTr<int>*, int);
+template NodeTr<int>* lesserLeaf(NodeTr<int>*);
+template NodeTr<int>* deleteNodeTree(NodeTr<int>*, int);
+template void deleteTree(NodeTr<int>*);
 template void bfsTraversal(NodeTr<int>*);
 template NodeTr<int>* bfSearch(NodeTr<int>*, int);
 template NodeTr<int>* searchNode(NodeTr<int>*, int);
