@@ -58,12 +58,12 @@ NodeTr<T>* lesserLeaf(NodeTr<T>* startingNode)
 }
 
 template <typename T>
-NodeTr<T>* deleteNodeTree(NodeTr<T>* startingNode, int iData)
+NodeTr<T>* deleteNodeTree(NodeTr<T>* startingNode, T tData)
 {
     if (startingNode == nullptr) return nullptr;
     
-    if (iData < startingNode->payload) startingNode->ptrLeft = deleteNodeTree(startingNode->ptrLeft, iData);
-    else if (iData > startingNode->payload) startingNode->ptrRight = deleteNodeTree(startingNode->ptrRight, iData);
+    if (tData < startingNode->payload) startingNode->ptrLeft = deleteNodeTree(startingNode->ptrLeft, tData);
+    else if (tData > startingNode->payload) startingNode->ptrRight = deleteNodeTree(startingNode->ptrRight, tData);
     else
     {
         NodeTr<T>* ptrTemp = nullptr;
