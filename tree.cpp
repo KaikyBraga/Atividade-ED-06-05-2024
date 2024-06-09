@@ -73,6 +73,43 @@ void bfsTraversal(NodeTr<T>* startingNode)
     }
 }
 
+template <typename T>
+NodeTr<T>* bfsSearch(NodeTr<T>* startingNode, T tValue)
+{
+    if (startingNode == nullptr) return nullptr;
+    
+    Node<NodeTr<T>*>* nodeListFront = createNode(startingNode);
+    Node<NodeTr<T>*>* nodeListRear = nodeListFront;
+
+    while (nodeListFront != nullptr)
+    {
+        NodeTr<T>* currentNode = nodeListFront->payload;
+
+        if (currentNode->payload == tValue) return currentNode;
+        
+        if (currentNode->ptrLeft != nullptr)
+        {
+            nodeListRear->ptrNext = createNode(currentNode->ptrLeft);
+            nodeListRear = nodeListRear->ptrNext;
+        }
+        
+        if (currentNode->ptrRight != nullptr)
+        {
+            nodeListRear->ptrNext = createNode(currentNode->ptrRight);
+            nodeListRear = nodeListRear->ptrNext;
+        }
+        
+        Node<NodeTr<T>*>* temp = nodeListFront;
+        nodeListFront = nodeListFront->ptrNext;
+        delete temp;
+    }
+
+    cout << "Valor não encontrado" << endl;
+
+    return nullptr;
+}
+
 template NodeTr<int>* createNodeTree(int);
 template NodeTr<int>* insertNodeTree(NodeTr<int>*, int);
 template void bfsTraversal(NodeTr<int>*);
+template NodeTr<int>* bfsSearch(NodeTr<int>*, int);
