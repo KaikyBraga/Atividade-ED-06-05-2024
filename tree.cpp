@@ -239,50 +239,49 @@ void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
     outputFile << "Tempo Criação de Árvores,Tempo bfsTraversal,Tempo bfSearch,Tempo dfSearchPreOrder,Tempo dfSearchInOrder,Tempo dfSearchPostOrder" << endl;
 
-
     for (int i = 1; i <= iNumLinhas; i++) 
     {
         // Criação de árvores com valores payLoads aleatórios
         NodeTr<int>* root = nullptr;
         auto timeStart1 = high_resolution_clock::now();
-        for (int iFolha = 0; iFolha < iLength; iFolha ++)
+        for (int iFolha = 0; iFolha < iLength; iFolha++) 
         {
-            insertNodeTree(root, (rand() % iLength) + 1);
+            root = insertNodeTree(root, (rand() % iLength) + 1);
         }
         auto timeStop1 = high_resolution_clock::now();
         auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
-
+        
         // Tempo bfsTraversal
-        auto timeStart2 = high_resolution_clock::now();   
+        auto timeStart2 = high_resolution_clock::now();
         bfsTraversal(root);
-        auto timeStop2 = high_resolution_clock::now();   
+        auto timeStop2 = high_resolution_clock::now();
         auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
         // Valor a ser buscado
         int iSortValue = (rand() % iLength) + 1;
 
         // Tempo de Busca bfSearch
-        auto timeStart3 = high_resolution_clock::now();   
+        auto timeStart3 = high_resolution_clock::now();
         NodeTr<int>* NodeFound1 = bfSearch(root, iSortValue);
-        auto timeStop3 = high_resolution_clock::now();   
+        auto timeStop3 = high_resolution_clock::now();
         auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
 
         // Tempo de Busca dfSearchPreOrder
-        auto timeStart4 = high_resolution_clock::now();   
+        auto timeStart4 = high_resolution_clock::now();
         NodeTr<int>* NodeFound2 = dfSearchPreOrder(root, iSortValue);
-        auto timeStop4 = high_resolution_clock::now();   
+        auto timeStop4 = high_resolution_clock::now();
         auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
 
         // Tempo de Busca dfSearchInOrder
-        auto timeStart5 = high_resolution_clock::now();   
+        auto timeStart5 = high_resolution_clock::now();
         NodeTr<int>* NodeFound3 = dfSearchInOrder(root, iSortValue);
-        auto timeStop5 = high_resolution_clock::now();   
+        auto timeStop5 = high_resolution_clock::now();
         auto timeDuration5 = duration_cast<nanoseconds>(timeStop5 - timeStart5);
 
         // Tempo de Busca dfSearchPostOrder
-        auto timeStart6 = high_resolution_clock::now();   
+        auto timeStart6 = high_resolution_clock::now();
         NodeTr<int>* NodeFound4 = dfSearchPostOrder(root, iSortValue);
-        auto timeStop6 = high_resolution_clock::now();   
+        auto timeStop6 = high_resolution_clock::now();
         auto timeDuration6 = duration_cast<nanoseconds>(timeStop6 - timeStart6);
 
         // Tempos para a iteração
