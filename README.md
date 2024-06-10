@@ -1,4 +1,4 @@
-# Algoritmos Sort - ESTRUTURA DE DADOS
+# Algoritmos - ESTRUTURA DE DADOS
 
 ## Integrantes:
 - [Guilherme Castilho](https://github.com/GuilhermeCastilho02)
@@ -11,4 +11,9 @@ Esse repositório tem o objetivo de realizar diferentes algoritmos de ordenaçã
 - Insertion Sort
 - Radix Sort
 
-**OBS:** Dentro da pasta `output`, é possível encontrar arquivos CSV com os tempos de execução dos algoritmos com listas duplamente encadeadas de 10000 elementos.
+Além disso, também foram realizadas funções para estruturas de árvores, tendo funções de busca presentes nelas:
+
+- Breadth First Search
+- Depth First Search
+
+**OBS:** Dentro da pasta `output`, é possível encontrar arquivos CSV com os tempos de execução dos algoritmos 10000 elementos em cada estrutura.
