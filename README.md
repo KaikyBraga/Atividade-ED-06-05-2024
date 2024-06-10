@@ -16,4 +16,4 @@ Além disso, também foram realizadas funções para estruturas de árvores, ten
 - Breadth First Search
 - Depth First Search
 
-**OBS:** Dentro da pasta `output`, é possível encontrar arquivos CSV com os tempos de execução dos algoritmos 10000 elementos cada estrutura.
+**OBS:** Dentro da pasta `output`, é possível encontrar arquivos CSV com os tempos de execução dos algoritmos 10000 elementos em cada estrutura.
