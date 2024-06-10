@@ -1,4 +1,4 @@
-# Algoritmos Sort - ESTRUTURA DE DADOS
+# Algoritmos - ESTRUTURA DE DADOS
 
 ## Integrantes:
 - [Guilherme Castilho](https://github.com/GuilhermeCastilho02)
