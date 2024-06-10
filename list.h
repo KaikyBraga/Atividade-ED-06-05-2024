@@ -19,5 +19,6 @@ void addRandomElements(Node<int>**, int, int);
 template <typename T> Node<T>* copyList(Node<T>**);
 template <typename T> void clearList(Node<T>**);
 template <typename T> T maxList(Node<T>*);
+template <typename T> Node<T>* searchNodebyValue(Node<T>**, T);
 
 #endif

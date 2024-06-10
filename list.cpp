@@ -231,6 +231,30 @@ T maxList(Node<T>* head)
     return iMaxValue;
 }
 
+template <typename T>
+Node<T>* searchNodebyValue(Node<T>** head, T tValue)
+{
+	if (head == nullptr)
+	{
+		cout << "A lista passada está vazia." << endl;
+		return nullptr;
+	}
+	
+	// Percorre a lista duplamente encadeada até encontrar o valor desejado
+	Node<T>* ptrCurrent = *head;
+	while (ptrCurrent != nullptr)
+	{
+		if (ptrCurrent->payload == tValue) return ptrCurrent;
+		ptrCurrent = ptrCurrent->ptrNext;
+	}
+	
+	// Caso o valor não seja encontrado
+	if (ptrCurrent == nullptr) 
+	{
+		cout << "O valor não foi encontrado" << endl;
+		return nullptr;
+	}
+}
 
 template Node<int>* createNode(int);
 template void insertFront(Node<int>**, int);
@@ -243,3 +267,4 @@ template Node<int>* copyList(Node<int>**);
 template void clearList(Node<int>**);
 template int maxList(Node<int>*);
 template Node<NodeTr<int>*>* createNode<NodeTr<int>*>(NodeTr<int>*);
+template Node<int>* searchNodebyValue(Node<int>**, int);
