@@ -74,7 +74,7 @@ void bubbleSortTime(int iNumLinhas, int iLength, const string& strFILENAME)
     srand(time(nullptr));
     
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Tempo Bubble Sort Padrão,Tempo Bubble Sort Otimizado" << endl;
+    outputFile << "Bubble Sort Padrão,Bubble Sort Otimizado" << endl;
 
     Node<int>* head1 = nullptr;
     Node<int>* head2 = nullptr;

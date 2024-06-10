@@ -1,6 +1,9 @@
 #include <iostream>
 #include "list.h"
 #include "tree.h"
+#include <vector>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
@@ -228,6 +231,7 @@ T maxList(Node<T>* head)
     return iMaxValue;
 }
 
+
 template Node<int>* createNode(int);
 template void insertFront(Node<int>**, int);
 template void insertEnd(Node<int>**, int);
@@ -238,5 +242,4 @@ void addRandomElements(Node<int>**, int, int);
 template Node<int>* copyList(Node<int>**);
 template void clearList(Node<int>**);
 template int maxList(Node<int>*);
-
 template Node<NodeTr<int>*>* createNode<NodeTr<int>*>(NodeTr<int>*);

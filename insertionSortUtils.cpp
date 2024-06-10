@@ -67,7 +67,7 @@ void insertSortTime(int iNumLinhas, int iLength, const string& strFILENAME)
     srand(time(nullptr));
 
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Tempo (nanossegundos)" << endl;
+    outputFile << "Insertion Sort" << endl;
 
     Node<int>* head = nullptr;
 

@@ -94,7 +94,7 @@ void selectionSortTime(int iNumLinhas, int iLength, const string& strFILENAME)
     srand(time(nullptr));
     
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Tempo Selection Sort Padrão,Tempo Selection Sort Otimizado" << endl;
+    outputFile << "Selection Sort Padrão,Selection Sort Otimizado" << endl;
 
     Node<int>* head1 = nullptr;
     Node<int>* head2 = nullptr;

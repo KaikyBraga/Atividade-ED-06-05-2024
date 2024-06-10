@@ -104,7 +104,7 @@ void radixSortTime(int iNumLinhas, int iLength, const string& strFILENAME)
     srand(time(nullptr));
 
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Tempo (nanossegundos)" << endl;
+    outputFile << "Radix Sort" << endl;
 
     Node<int>* head = nullptr;
 

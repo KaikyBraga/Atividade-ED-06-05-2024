@@ -230,30 +230,41 @@ NodeTr<T>* dfSearchPostOrder(NodeTr<T>* ptrStartingNode, T tData)
 
 void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
 {
-    /*Essa função salva os tempos de execução de busca em árvore utilizando DFS e BFS,
-    o desempenho de criação de listas e de criação de árvores.*/
-
     // Inicialização da semente do gerador de números aleatórios com o tempo atual
     srand(time(nullptr));
 
     ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Tempo Criação de Árvores,Tempo bfsTraversal,Tempo bfSearch,Tempo dfSearchPreOrder,Tempo dfSearchInOrder,Tempo dfSearchPostOrder" << endl;
+    outputFile << "Criação de Árvores,Criação de Listas,bfSearch,dfSearchPreOrder,dfSearchInOrder,dfSearchPostOrder" << endl;
+
+    Node<int>* head = nullptr;
+    
+    int arri[iLength] = {0};
 
     for (int i = 1; i <= iNumLinhas; i++) 
     {
-        // Criação de árvores com valores payLoads aleatórios
         NodeTr<int>* root = nullptr;
+
+        // Valores a serem inseridos na lista/árvore
+        for (int j = 0; j < iLength; j ++)
+        {
+            arri[j] = (rand() % iLength) + 1;
+        }
+
+        // Criação de árvores com valores payLoads aleatórios
         auto timeStart1 = high_resolution_clock::now();
         for (int iFolha = 0; iFolha < iLength; iFolha++) 
         {
-            root = insertNodeTree(root, (rand() % iLength) + 1);
+            root = insertNodeTree(root, arri[iFolha]);
         }
         auto timeStop1 = high_resolution_clock::now();
         auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
         
-        // Tempo bfsTraversal
+        // Criação de Listas
         auto timeStart2 = high_resolution_clock::now();
-        bfsTraversal(root);
+        for (int iNode = 0; iNode < iLength; iNode++)
+        {
+            insertEnd(&head, arri[iNode]);
+        }
         auto timeStop2 = high_resolution_clock::now();
         auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
 
@@ -288,10 +299,12 @@ void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
         outputFile << timeDuration1.count() << "," << timeDuration2.count() << "," << timeDuration3.count() << "," << timeDuration4.count() << "," << timeDuration5.count() << "," << timeDuration6.count() << endl;
 
         deleteTree(root);
+        clearList(&head);
     }
 
     outputFile.close();
 }
+
 
 template NodeTr<int>* createNodeTree(int);
 template NodeTr<int>* insertNodeTree(NodeTr<int>*, int);
