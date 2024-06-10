@@ -16,6 +16,6 @@ void radixSortTime(int, int, const string&);
 
 void treeTime(int, int, const string&); 
 
-void concatenaCSV(const vector<string>& arquivos, const string& arquivoSaida);
+void concatenaCSV(const vector<string>&, const string&);
 
 #endif
