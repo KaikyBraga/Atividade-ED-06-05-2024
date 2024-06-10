@@ -224,8 +224,7 @@ void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
 }
 
 
-void concatenaCSV(const vector<string>& arquivos, const string& arquivoSaida) 
-{
+void concatenaCSV(const vector<string>& arquivos, const string& arquivoSaida) {
     // Essa função concatena CSVs um do lado do outro.
 
     ofstream saida(arquivoSaida);
@@ -237,12 +236,12 @@ void concatenaCSV(const vector<string>& arquivos, const string& arquivoSaida)
     }
 
     vector<ifstream> entradas;
-    for (const string& nomeArquivo : arquivos) 
+    for (const string& nome_arquivo : arquivos) 
     {
-        ifstream entrada(nomeArquivo);
+        ifstream entrada(nome_arquivo);
         if (!entrada.is_open()) 
         {
-            cerr << "Erro ao abrir o arquivo: " << nomeArquivo << endl;
+            cerr << "Erro ao abrir o arquivo: " << nome_arquivo << endl;
             return;
         }
         entradas.push_back(move(entrada));

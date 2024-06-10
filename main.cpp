@@ -1,11 +1,14 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
 
 #include "list.h"
 #include "sortsUtils.h"
 #include "tree.h"
 #include "times.h"
+
+using namespace std;
 
 int main() 
 {
@@ -28,7 +31,10 @@ int main()
     treeTime(100, 10000, "output/tree_time.csv");
 
     // Arquivo de todos os tempos das funções
-    // concatenaCSV({"output/bubbleSort_time.csv", "output/selectionSort_time.csv", "output/insertSort_time.csv", "output/radixSort_time.csv","output/tree_time.csv"}, "output/all_times.csv");
+    vector<string> arquivos = {"output/bubbleSort_time.csv","output/selectionSort_time.csv","output/insertSort_time.csv","output/radixSort_time.csv","output/tree_time.csv"};
+    string saida = "output/all_times.csv";
+
+    concatenaCSV(arquivos, saida);
 
     return 0;
 }
