@@ -164,7 +164,7 @@ void addRandomElements(Node<int>** head, int iQuantElements, int iMaxValue)
     // É possível passar o Valor máximo da carga Payload.
 
     for (int i=0; i < iQuantElements; i++)
-        insertEnd(head, (rand() % iMaxValue) + 1);
+        insertFront(head, (rand() % iMaxValue) + 1);
 }
 
 template <typename T>

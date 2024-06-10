@@ -1,13 +1,9 @@
 #include <iostream>
-#include <chrono>
-#include <fstream>
+
 #include "list.h"
 #include "tree.h"
 
 using namespace std;
-using chrono::high_resolution_clock;
-using chrono::duration_cast;
-using chrono::nanoseconds;
 
 template <typename T>
 NodeTr<T>* createNodeTree(T tValue)
@@ -91,6 +87,7 @@ NodeTr<T>* deleteNodeTree(NodeTr<T>* startingNode, T tData)
     return startingNode;
 }
 
+
 template <typename T>
 void deleteTree(NodeTr<T>* startingNode) 
 {
@@ -168,6 +165,7 @@ NodeTr<T>* bfSearch(NodeTr<T>* ptrStartingNode, T tData)
     return nullptr;
 }
 
+
 template <typename T>
 NodeTr<T>* searchNode(NodeTr<T>* ptrStartingNode, T tData)
 {
@@ -179,6 +177,7 @@ NodeTr<T>* searchNode(NodeTr<T>* ptrStartingNode, T tData)
 
     else return searchNode(ptrStartingNode->ptrRight, tData);
 }
+
 
 template <typename T>
 NodeTr<T>* dfSearchPreOrder(NodeTr<T>* ptrStartingNode, T tData)
@@ -195,6 +194,7 @@ NodeTr<T>* dfSearchPreOrder(NodeTr<T>* ptrStartingNode, T tData)
 
     return nullptr;
 }
+
 
 template <typename T>
 NodeTr<T>* dfSearchInOrder(NodeTr<T>* ptrStartingNode, T tData)
@@ -227,84 +227,6 @@ NodeTr<T>* dfSearchPostOrder(NodeTr<T>* ptrStartingNode, T tData)
 
     return nullptr;
 }
-
-void treeTime(int iNumLinhas, int iLength, const string& strFILENAME)
-{
-    // Inicialização da semente do gerador de números aleatórios com o tempo atual
-    srand(time(nullptr));
-
-    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Criação de Árvores,Criação de Listas,bfSearch,dfSearchPreOrder,dfSearchInOrder,dfSearchPostOrder" << endl;
-
-    Node<int>* head = nullptr;
-    
-    int arri[iLength] = {0};
-
-    for (int i = 1; i <= iNumLinhas; i++) 
-    {
-        NodeTr<int>* root = nullptr;
-
-        // Valores a serem inseridos na lista/árvore
-        for (int j = 0; j < iLength; j ++)
-        {
-            arri[j] = (rand() % iLength) + 1;
-        }
-
-        // Criação de árvores com valores payLoads aleatórios
-        auto timeStart1 = high_resolution_clock::now();
-        for (int iFolha = 0; iFolha < iLength; iFolha++) 
-        {
-            root = insertNodeTree(root, arri[iFolha]);
-        }
-        auto timeStop1 = high_resolution_clock::now();
-        auto timeDuration1 = duration_cast<nanoseconds>(timeStop1 - timeStart1);
-        
-        // Criação de Listas
-        auto timeStart2 = high_resolution_clock::now();
-        for (int iNode = 0; iNode < iLength; iNode++)
-        {
-            insertEnd(&head, arri[iNode]);
-        }
-        auto timeStop2 = high_resolution_clock::now();
-        auto timeDuration2 = duration_cast<nanoseconds>(timeStop2 - timeStart2);
-
-        // Valor a ser buscado
-        int iSortValue = (rand() % iLength) + 1;
-
-        // Tempo de Busca bfSearch
-        auto timeStart3 = high_resolution_clock::now();
-        NodeTr<int>* NodeFound1 = bfSearch(root, iSortValue);
-        auto timeStop3 = high_resolution_clock::now();
-        auto timeDuration3 = duration_cast<nanoseconds>(timeStop3 - timeStart3);
-
-        // Tempo de Busca dfSearchPreOrder
-        auto timeStart4 = high_resolution_clock::now();
-        NodeTr<int>* NodeFound2 = dfSearchPreOrder(root, iSortValue);
-        auto timeStop4 = high_resolution_clock::now();
-        auto timeDuration4 = duration_cast<nanoseconds>(timeStop4 - timeStart4);
-
-        // Tempo de Busca dfSearchInOrder
-        auto timeStart5 = high_resolution_clock::now();
-        NodeTr<int>* NodeFound3 = dfSearchInOrder(root, iSortValue);
-        auto timeStop5 = high_resolution_clock::now();
-        auto timeDuration5 = duration_cast<nanoseconds>(timeStop5 - timeStart5);
-
-        // Tempo de Busca dfSearchPostOrder
-        auto timeStart6 = high_resolution_clock::now();
-        NodeTr<int>* NodeFound4 = dfSearchPostOrder(root, iSortValue);
-        auto timeStop6 = high_resolution_clock::now();
-        auto timeDuration6 = duration_cast<nanoseconds>(timeStop6 - timeStart6);
-
-        // Tempos para a iteração
-        outputFile << timeDuration1.count() << "," << timeDuration2.count() << "," << timeDuration3.count() << "," << timeDuration4.count() << "," << timeDuration5.count() << "," << timeDuration6.count() << endl;
-
-        deleteTree(root);
-        clearList(&head);
-    }
-
-    outputFile.close();
-}
-
 
 template NodeTr<int>* createNodeTree(int);
 template NodeTr<int>* insertNodeTree(NodeTr<int>*, int);

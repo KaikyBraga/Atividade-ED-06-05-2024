@@ -1,15 +1,9 @@
 #include <iostream>
-#include <chrono>
-#include <fstream>
 
 #include "list.h"
 #include "sortsUtils.h"
 
 using namespace std;
-
-using chrono::high_resolution_clock;
-using chrono::duration_cast;
-using chrono::nanoseconds;
 
 template <typename T> 
 void radixSort(Node<T>** head)
@@ -98,29 +92,4 @@ void tutorialRadixSort()
     cout << "OUTPUT: [26 43 79 140 330 721]" << endl;
 }
 
-void radixSortTime(int iNumLinhas, int iLength, const string& strFILENAME) 
-{
-    // Inicialização da semente do gerador de números aleatórios com o tempo atual
-    srand(time(nullptr));
-
-    ofstream outputFile(strFILENAME, ios::out | ios::trunc);
-    outputFile << "Radix Sort" << endl;
-
-    Node<int>* head = nullptr;
-
-    for (int i = 1; i <= iNumLinhas; i++) 
-    {
-        addRandomElements(&head, iLength, i);
-
-        auto timeStart = high_resolution_clock::now();
-        radixSort(&head);
-        auto timeStop = high_resolution_clock::now();
-
-        auto timeDuration = duration_cast<nanoseconds>(timeStop - timeStart);
-
-        outputFile << timeDuration.count() << endl;
-        clearList(&head);
-    }
-
-    outputFile.close();
-}
+template void radixSort(Node<int>**);
