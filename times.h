@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-using std::string;
+using namespace std;
 
 void bubbleSortTime(int, int, const string&);
 
@@ -16,6 +16,6 @@ void radixSortTime(int, int, const string&);
 
 void treeTime(int, int, const string&); 
 
-// template <typename T> void concatenaCSV(const vector<string>&, const string&);
+void concatenaCSV(const vector<string>& arquivos, const string& arquivoSaida);
 
 #endif
